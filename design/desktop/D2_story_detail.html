@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-white" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SachVerify — Story Detail (Kolhapur Evacuation Directive)</title>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary-fixed": "#ffffff",
+            "on-surface-variant": "#474747",
+            "surface": "#fbf9f9",
+            "on-secondary-fixed": "#1b1b1b",
+            "tertiary-container": "#747474",
+            "on-primary-fixed": "#ffffff",
+            "primary": "#000000",
+            "surface-variant": "#e3e2e2",
+            "on-secondary": "#ffffff",
+            "on-error-container": "#410002",
+            "secondary": "#5e5e5e",
+            "outline": "#777777",
+            "on-secondary-container": "#1b1b1b",
+            "on-background": "#1b1c1c",
+            "error-container": "#ffdad6",
+            "surface-container-highest": "#e3e2e2",
+            "outline-variant": "#c6c6c6",
+            "on-surface": "#1b1c1c",
+            "on-secondary-fixed-variant": "#3b3b3b",
+            "secondary-container": "#d4d4d4",
+            "on-tertiary": "#e2e2e2",
+            "inverse-on-surface": "#f2f0f0",
+            "surface-container-high": "#e9e8e7",
+            "on-tertiary-fixed-variant": "#e2e2e2",
+            "on-primary-fixed-variant": "#e5e2e1",
+            "surface-container-lowest": "#ffffff",
+            "primary-fixed-dim": "#474746",
+            "primary-container": "#3c3b3b",
+            "surface-dim": "#dbdad9",
+            "tertiary-fixed": "#5e5e5e",
+            "tertiary": "#3b3b3b",
+            "secondary-fixed-dim": "#ababab",
+            "error": "#ba1a1a",
+            "surface-tint": "#5f5e5e",
+            "inverse-surface": "#303031",
+            "surface-container-low": "#f5f3f3",
+            "surface-container": "#efeded",
+            "primary-fixed": "#5f5e5e",
+            "on-tertiary-container": "#ffffff",
+            "on-primary-container": "#ffffff",
+            "on-primary": "#e5e2e1",
+            "inverse-primary": "#c8c6c5",
+            "secondary-fixed": "#c6c6c6",
+            "surface-bright": "#fbf9f9",
+            "background": "#fbf9f9",
+            "tertiary-fixed-dim": "#474747",
+            "on-error": "#ffffff"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            headline: ["Inter", "sans-serif"],
+            display: ["Inter", "sans-serif"],
+            body: ["Inter", "sans-serif"],
+            label: ["Inter", "sans-serif"],
+            mono: ["'JetBrains Mono'", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Strict Micro-tokens for Design System */
+    .status-dot-verified { background-color: #5F7F68; }
+    .status-dot-conflicting { background-color: #A88442; }
+    .status-dot-outdated { background-color: #A3A3A3; }
+    .status-dot-unverified { background-color: #6B7A99; }
+    
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Minimal custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #E5E5E5;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-[#171717] font-body min-h-screen flex flex-col antialiased selection:bg-[#E5E5E5] selection:text-[#171717]">
+<!-- TopNavBar (Shared Component Anchor) -->
+<header class="bg-surface-container-lowest docked full-width top-0 h-14 sticky z-50 border-b border-[#E5E5E5]">
+<div class="flex justify-between items-center h-14 w-full px-6 max-w-[1440px] mx-auto">
+<!-- Brand & Search Cluster -->
+<div class="flex items-center gap-6">
+<span class="font-headline text-base font-semibold tracking-tight text-[#171717]">SachVerify</span>
+<div class="relative w-64 hidden sm:block">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[16px] text-[#A3A3A3]" data-icon="search">search</span>
+<input class="w-full h-8 pl-8 pr-3 bg-surface-container-low text-xs border border-[#E5E5E5] rounded focus:outline-none focus:border-[#0F766E] placeholder-[#A3A3A3] text-[#171717] font-body transition-colors" placeholder="Search story, URL, or claim ID..." type="text"/>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-8 text-xs font-label">
+<a class="text-secondary hover:text-on-surface transition-colors duration-150" href="#">Directives</a>
+<a class="font-medium border-b-2 border-[#0F766E] pb-4 pt-4 -mb-[2px] transition-colors text-[#0F766E]" href="#">Database</a>
+<a class="text-secondary hover:text-on-surface transition-colors duration-150" href="#">Sources</a>
+<a class="text-secondary hover:text-on-surface transition-colors duration-150" href="#">Archive</a>
+</nav>
+<!-- Trailing Cluster -->
+<div class="flex items-center gap-3">
+<button class="px-3 h-8 bg-[#0F766E] hover:bg-[#115E59] text-white rounded text-xs font-medium transition-colors" type="button">
+          Check a post
+        </button>
+<button class="w-8 h-8 flex items-center justify-center text-[#525252] hover:bg-surface-container-high rounded transition-colors" title="Notifications" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="notifications">notifications</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-[#525252] hover:bg-surface-container-high rounded transition-colors" title="Help" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="help_outline">help_outline</span>
+</button>
+<div class="w-7 h-7 rounded-full bg-[#E5E5E5] flex items-center justify-center text-[10px] font-mono-code font-medium text-[#171717] border border-[#E5E5E5]" title="User avatar">
+          SV
+        </div>
+</div>
+</div>
+</header>
+<!-- Canvas Container -->
+<main class="flex-1 w-full max-w-[1240px] mx-auto px-6 py-8">
+<!-- Story Header Area -->
+<section class="mb-8">
+<!-- Breadcrumb -->
+<div class="flex items-center gap-2 text-[13px] text-[#525252] mb-3 font-normal">
+<a class="hover:text-[#171717] transition-colors" href="#">Stories</a>
+<span class="text-[#A3A3A3]">/</span>
+<span class="text-[#171717]">Pune</span>
+</div>
+<!-- H1 Claim -->
+<h1 class="text-[24px] font-semibold text-[#171717] tracking-tight leading-snug mb-3 max-w-[960px]">
+        Evacuate all low-lying areas of Kolhapur immediately
+      </h1>
+<!-- Status Pills & Tags Row -->
+<div class="flex flex-wrap items-center gap-2 mb-3">
+<!-- Outdated Status Pill -->
+<div class="inline-flex items-center gap-1.5 h-[22px] px-2.5 bg-white border border-[#E5E5E5] rounded-full">
+<span class="w-[6px] h-[6px] rounded-full status-dot-outdated"></span>
+<span class="text-[12px] font-medium text-[#171717] leading-none">Outdated</span>
+</div>
+<!-- Grey Outline Tag -->
+<span class="inline-flex items-center px-2 py-0.5 border border-[#E5E5E5] text-[12px] text-[#525252] rounded leading-none">
+          Superseded directive
+        </span>
+</div>
+<!-- Context Comparison Row -->
+<div class="flex flex-wrap items-center gap-3 py-2 px-3 bg-surface-container-low border border-[#E5E5E5] rounded-lg max-w-fit mb-3">
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-mono uppercase tracking-wider text-[#A3A3A3]">Current:</span>
+<span class="inline-flex items-center gap-1.5 text-xs text-[#171717] font-medium">
+<span class="w-[6px] h-[6px] rounded-full status-dot-outdated"></span>
+            Outdated
+          </span>
+</div>
+<span class="text-[#C6C6C6] text-xs">|</span>
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-mono uppercase tracking-wider text-[#A3A3A3]">Historical:</span>
+<span class="inline-flex items-center gap-1.5 text-xs text-[#171717] font-medium">
+<span class="w-[6px] h-[6px] rounded-full status-dot-verified"></span>
+            Verified
+          </span>
+</div>
+<span class="text-[#C6C6C6] text-xs">·</span>
+<span class="text-[13px] text-[#525252]">True when posted, no longer current</span>
+</div>
+<!-- Meta Row -->
+<div class="font-mono-code text-[12px] text-[#737373] tracking-tight">
+        first seen 06 Aug 09:12 · 41 posts · hi · mr · en · Tipline, Replay
+      </div>
+</section>
+<!-- Main Grid: 880px column + 300px rail with 40px gap -->
+<div class="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-10 items-start">
+<!-- Primary Column (Cards 1 to 5) -->
+<div class="space-y-6">
+<!-- Card 1: Atomic facts -->
+<section class="bg-white border border-[#E5E5E5] rounded-lg p-6">
+<div class="flex items-center justify-between pb-4 border-b border-[#E5E5E5] mb-4">
+<div class="flex items-center gap-2">
+<h2 class="text-sm font-semibold text-[#171717]">Atomic facts</h2>
+<span class="text-[11px] font-mono-code px-1.5 py-0.5 bg-surface-container-low border border-[#E5E5E5] text-[#525252] rounded">4 items</span>
+</div>
+<span class="text-[11px] font-mono uppercase text-[#A3A3A3]">Deconstruction Model v2.4</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse text-xs">
+<thead>
+<tr class="text-[11px] font-mono uppercase tracking-wider text-[#A3A3A3] border-b border-[#E5E5E5]">
+<th class="pb-2 font-normal">Fact Statement</th>
+<th class="pb-2 font-normal">Type</th>
+<th class="pb-2 font-normal">Scope</th>
+<th class="pb-2 font-normal">Nature</th>
+<th class="pb-2 font-normal text-center w-8">State</th>
+<th class="pb-2 font-normal text-right">Evidence</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#E5E5E5]">
+<tr class="hover:bg-[#FAFAFA] transition-colors">
+<td class="py-3 pr-3 text-[#171717] font-medium leading-relaxed">River Panchganga breached danger mark at 43.8 ft</td>
+<td class="py-3 pr-3 text-[#525252]">Sensor reading</td>
+<td class="py-3 pr-3 text-[#171717]">Core</td>
+<td class="py-3 pr-3 text-[#525252]">Factual</td>
+<td class="py-3 text-center text-[#525252] font-mono">✓</td>
+<td class="py-3 text-right font-mono-code text-[#525252]">6 citations</td>
+</tr>
+<tr class="hover:bg-[#FAFAFA] transition-colors">
+<td class="py-3 pr-3 text-[#171717] font-medium leading-relaxed">NDRF teams deployed to Chhatrapati Shivaji Stadium</td>
+<td class="py-3 pr-3 text-[#525252]">Official alert</td>
+<td class="py-3 pr-3 text-[#171717]">Core</td>
+<td class="py-3 pr-3 text-[#525252]">Factual</td>
+<td class="py-3 text-center text-[#525252] font-mono">✓</td>
+<td class="py-3 text-right font-mono-code text-[#525252]">4 citations</td>
+</tr>
+<tr class="hover:bg-[#FAFAFA] transition-colors">
+<td class="py-3 pr-3 text-[#171717] font-medium leading-relaxed">Water level receding by 0.2m per hour as of 14:00</td>
+<td class="py-3 pr-3 text-[#525252]">Civic update</td>
+<td class="py-3 pr-3 text-[#525252]">Detail</td>
+<td class="py-3 pr-3 text-[#525252]">Factual</td>
+<td class="py-3 text-center text-[#525252] font-mono">⟲</td>
+<td class="py-3 text-right font-mono-code text-[#525252]">3 citations</td>
+</tr>
+<tr class="hover:bg-[#FAFAFA] transition-colors opacity-50 bg-[#FAFAFA]/50">
+<td class="py-3 pr-3 text-[#A3A3A3] italic">"Scariest night of my life"</td>
+<td class="py-3 pr-3 text-[#A3A3A3]">First-person account</td>
+<td class="py-3 pr-3 text-[#A3A3A3]">Detail</td>
+<td class="py-3 pr-3 text-[#A3A3A3]">Subjective</td>
+<td class="py-3 text-center text-[#A3A3A3] font-mono">?</td>
+<td class="py-3 text-right">
+<span class="inline-block px-1.5 py-0.5 border border-[#E5E5E5] text-[10px] text-[#737373] rounded bg-white font-mono">
+                      Subjective — excluded
+                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Card 2: Evidence -->
+<section class="bg-white border border-[#E5E5E5] rounded-lg p-6">
+<div class="flex items-center justify-between pb-3 border-b border-[#E5E5E5] mb-5">
+<h2 class="text-sm font-semibold text-[#171717]">Evidence</h2>
+<span class="text-[11px] font-mono uppercase text-[#A3A3A3]">41 TOTAL INPUTS</span>
+</div>
+<!-- Underline Tabs -->
+<div class="flex items-center gap-6 border-b border-[#E5E5E5] text-xs mb-6 overflow-x-auto">
+<button class="pb-2 font-medium text-[#171717] border-b border-[#171717] -mb-[1px]">Official (4)</button>
+<button class="pb-2 text-[#525252] hover:text-[#171717] transition-colors">Sensors (2)</button>
+<button class="pb-2 text-[#525252] hover:text-[#171717] transition-colors">Local news (8)</button>
+<button class="pb-2 text-[#525252] hover:text-[#171717] transition-colors">National/global (3)</button>
+<button class="pb-2 text-[#525252] hover:text-[#171717] transition-colors">Other posts (24)</button>
+</div>
+<!-- Evidence List -->
+<div class="space-y-6">
+<!-- Evidence Item 1 -->
+<article class="p-4 rounded border border-[#E5E5E5] bg-white">
+<div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+<div class="flex items-center gap-2">
+<span class="w-4 h-4 border border-[#E5E5E5] rounded text-[10px] font-mono flex items-center justify-center font-medium text-[#171717] bg-[#FAFAFA]">A</span>
+<h3 class="text-xs font-semibold text-[#171717]">District Disaster Management Authority, Kolhapur</h3>
+<span class="px-1.5 py-0.5 border border-[#E5E5E5] text-[10px] text-[#525252] rounded">Before</span>
+</div>
+<div class="text-[11px] font-mono-code text-[#737373]">
+                  06 Aug 09:30 IST · 4m ago
+                </div>
+</div>
+<div class="flex items-center gap-2 text-[11px] font-mono text-[#525252] mb-3">
+<span>inside alert area (Kolhapur HQ)</span>
+<span>·</span>
+<span>Ref: DDMA-0806-01</span>
+</div>
+<blockquote class="border-l-2 border-[#E5E5E5] pl-3 py-0.5 text-xs text-[#525252] leading-relaxed mb-3">
+                “Alert issued for low-lying sectors near Panchganga basin. Precautionary evacuation initiated.”
+              </blockquote>
+<div class="flex justify-end">
+<a class="text-[11px] font-medium hover:underline flex items-center gap-1 text-[#0F766E]" href="#">
+                  Open source ↗
+                </a>
+</div>
+</article>
+<!-- Evidence Item 2 (Superseding) -->
+<article class="p-4 rounded border border-[#E5E5E5] bg-[#FAFAFA]/60">
+<div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+<div class="flex items-center gap-2">
+<span class="w-4 h-4 border border-[#E5E5E5] rounded text-[10px] font-mono flex items-center justify-center font-medium text-[#171717] bg-white">A</span>
+<h3 class="text-xs font-semibold text-[#171717]">Kolhapur Municipal Corporation Bulletin #4</h3>
+<span class="px-1.5 py-0.5 border border-[#E5E5E5] text-[10px] text-[#525252] rounded bg-white">Superseding</span>
+</div>
+<div class="text-[11px] font-mono-code text-[#737373]">
+                  06 Aug 14:15 IST
+                </div>
+</div>
+<div class="flex items-center gap-2 text-[11px] font-mono text-[#525252] mb-3">
+<span>inside alert area</span>
+<span>·</span>
+<span>Ref: KMC-FL-04</span>
+</div>
+<blockquote class="border-l-2 border-[#E5E5E5] pl-3 py-0.5 text-xs text-[#525252] leading-relaxed mb-3">
+                “Water level stabilized below warning threshold; evacuation directive revised to advisory monitoring.”
+              </blockquote>
+<div class="flex items-center justify-between pt-1">
+<span class="text-[11px] font-mono-code text-[#737373]">
+                  Superseded by ev_7f2 (District Collectorate Briefing)
+                </span>
+<a class="text-[11px] font-medium hover:underline flex items-center gap-1 text-[#0F766E]" href="#">
+                  Open source ↗
+                </a>
+</div>
+</article>
+<!-- Collapsed Note Line -->
+<div class="flex items-center gap-1.5 text-[12px] text-[#737373] cursor-pointer hover:text-[#171717] transition-colors py-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="expand_more">expand_more</span>
+<span>Also reported by 6 outlets (copies — counted once)</span>
+</div>
+</div>
+</section>
+<!-- Card 3: Time -->
+<section class="bg-white border border-[#E5E5E5] rounded-lg p-6">
+<div class="flex items-center justify-between pb-3 border-b border-[#E5E5E5] mb-5">
+<h2 class="text-sm font-semibold text-[#171717]">Time</h2>
+<span class="text-[11px] font-mono uppercase text-[#A3A3A3]">Temporal Validity Analysis</span>
+</div>
+<div class="p-4 bg-surface-container-low border border-[#E5E5E5] rounded">
+<!-- Timeline Diagram Header Label -->
+<div class="flex items-center justify-between text-[11px] font-mono text-[#737373] mb-4">
+<span>08:00</span>
+<span class="text-[#171717] font-medium">Validity window (4h 48m)</span>
+<span>18:00</span>
+</div>
+<!-- Visual Bar Representation -->
+<div class="relative h-12 w-full my-4">
+<!-- Base Track -->
+<div class="absolute top-1/2 left-0 right-0 h-[1px] bg-[#E5E5E5] -translate-y-1/2"></div>
+<!-- Shaded Validity Window (09:12 to 14:00) -->
+<div class="absolute top-2 bottom-2 left-[18%] right-[32%] bg-[#E5E5E5]/60 border-l border-r border-[#A3A3A3]/40 rounded-sm flex items-center justify-center">
+<span class="text-[10px] font-mono uppercase tracking-wider text-[#525252]">Active Directive</span>
+</div>
+<!-- Markers -->
+<!-- 08:30 Event occurred -->
+<div class="absolute top-1/2 left-[8%] -translate-y-1/2 flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-white border border-[#525252]"></div>
+</div>
+<!-- 09:12 Claim surfaced -->
+<div class="absolute top-1/2 left-[18%] -translate-y-1/2 flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-[#171717]"></div>
+</div>
+<!-- 09:30 Evidence recorded -->
+<div class="absolute top-1/2 left-[25%] -translate-y-1/2 flex flex-col items-center">
+<div class="w-1.5 h-1.5 rounded-full bg-[#525252]"></div>
+</div>
+<!-- 10:00 Initial verification -->
+<div class="absolute top-1/2 left-[34%] -translate-y-1/2 flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-[#5F7F68]"></div>
+</div>
+<!-- Now (17:45) Indicator -->
+<div class="absolute top-0 bottom-0 right-[4%] w-[1px] bg-[#171717] flex flex-col items-center">
+<span class="text-[9px] font-mono bg-[#171717] text-white px-1 py-0.5 rounded -mt-4">Now</span>
+</div>
+</div>
+<!-- Milestone Legends -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-[#E5E5E5] text-[11px] font-mono-code text-[#525252]">
+<div>
+<span class="block text-[#171717] font-medium">08:30</span>
+<span class="text-[#737373]">Event occurred</span>
+</div>
+<div>
+<span class="block text-[#171717] font-medium">09:12</span>
+<span class="text-[#737373]">Claim surfaced</span>
+</div>
+<div>
+<span class="block text-[#171717] font-medium">09:30</span>
+<span class="text-[#737373]">Evidence recorded</span>
+</div>
+<div>
+<span class="block text-[#171717] font-medium">10:00</span>
+<span class="text-[#737373]">Initial verification</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Card 4: Place -->
+<section class="bg-white border border-[#E5E5E5] rounded-lg p-6">
+<div class="flex items-center justify-between pb-3 border-b border-[#E5E5E5] mb-4">
+<h2 class="text-sm font-semibold text-[#171717]">Place</h2>
+<div class="font-mono-code text-[11px] text-[#737373]">
+              16.7050° N, 74.2433° E · Panchganga Riverbank
+            </div>
+</div>
+<!-- Desaturated Technical Map Display -->
+<div class="relative h-[200px] w-full bg-[#FAFAFA] border border-[#E5E5E5] rounded flex items-center justify-center overflow-hidden">
+<!-- Simulated GIS Vector Wireframe -->
+<svg class="absolute inset-0 w-full h-full stroke-[#E5E5E5]" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line stroke-dasharray="4 4" stroke-width="0.5" x1="0" x2="100%" y1="50" y2="50"></line>
+<line stroke-dasharray="4 4" stroke-width="0.5" x1="0" x2="100%" y1="100" y2="100"></line>
+<line stroke-dasharray="4 4" stroke-width="0.5" x1="0" x2="100%" y1="150" y2="150"></line>
+<line stroke-dasharray="4 4" stroke-width="0.5" x1="25%" x2="25%" y1="0" y2="100%"></line>
+<line stroke-dasharray="4 4" stroke-width="0.5" x1="50%" x2="50%" y1="0" y2="100%"></line>
+<line stroke-dasharray="4 4" stroke-width="0.5" x1="75%" x2="75%" y1="0" y2="100%"></line>
+</svg>
+<!-- District Boundary Polygon Mock (Kolhapur zone) -->
+<div class="relative w-64 h-36 border border-[#525252] bg-[#171717]/[0.04] rounded-[16px] flex items-center justify-center">
+<!-- 3.2km Radius Circle -->
+<div class="w-24 h-24 rounded-full border border-dashed border-[#A3A3A3] flex items-center justify-center relative">
+<!-- Center Coordinate Point -->
+<div class="w-2 h-2 rounded-full bg-[#171717]"></div>
+<div class="absolute -top-6 text-[10px] font-mono text-[#525252] whitespace-nowrap bg-white/90 px-1 border border-[#E5E5E5] rounded">
+                  Region-level precision (3.2 km radius)
+                </div>
+</div>
+<!-- Geographical Labels -->
+<span class="absolute bottom-2 left-3 text-[10px] font-mono uppercase text-[#A3A3A3]">Kolhapur District HQ</span>
+<span class="absolute top-2 right-3 text-[10px] font-mono uppercase text-[#A3A3A3]">Ward 3-D</span>
+</div>
+<!-- Map Metadata Overlay -->
+<div class="absolute bottom-2 right-3 text-[10px] font-mono text-[#A3A3A3]">
+              Datum: WGS84 · Scale 1:25000
+            </div>
+</div>
+</section>
+<!-- Card 5: Why this status -->
+<section class="bg-white border border-[#E5E5E5] rounded-lg p-6">
+<div class="flex items-center justify-between pb-3 border-b border-[#E5E5E5] mb-4">
+<h2 class="text-sm font-semibold text-[#171717]">Why this status</h2>
+<span class="text-[11px] font-mono uppercase text-[#A3A3A3]">Deterministic Evaluation</span>
+</div>
+<p class="text-xs text-[#171717] leading-relaxed mb-4">
+            Initial evacuation advisories were accurate upon release following heavy upstream discharge from Radhanagari Dam. Subsequent briefing <code class="font-mono-code text-[11px] bg-surface-container-low px-1.5 py-0.5 border border-[#E5E5E5] rounded text-[#171717]">[ev_7f2]</code> confirmed sluice gates calibrated and river levels stabilized at 41.2 ft, rendering active emergency evacuation notices outdated. Original directives referenced under <code class="font-mono-code text-[11px] bg-surface-container-low px-1.5 py-0.5 border border-[#E5E5E5] rounded text-[#171717]">[ev_3a1]</code> are retained for historical audit.
+          </p>
+<div class="border-t border-[#E5E5E5] pt-3">
+<h3 class="text-[11px] font-mono uppercase tracking-wider text-[#A3A3A3] mb-2">Uncertainty &amp; Open Variables</h3>
+<ul class="space-y-1.5 text-xs text-[#525252]">
+<li class="flex items-start gap-2">
+<span class="text-[#A3A3A3] mt-0.5">·</span>
+<span>Localized waterlogging persists in survey block 14B; official road reopening schedule pending 18:00 bulletin.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-[#A3A3A3] mt-0.5">·</span>
+<span>Automated telemeter at Rajaram weir reporting packet latency (32 min drift).</span>
+</li>
+</ul>
+</div>
+</section>
+</div>
+<!-- Sticky Right Rail (300px width) -->
+<aside class="space-y-6 lg:sticky lg:top-20">
+<!-- Verdict history Card -->
+<div class="bg-white border border-[#E5E5E5] rounded-lg p-5">
+<div class="flex items-center justify-between pb-3 border-b border-[#E5E5E5] mb-4">
+<h3 class="text-xs font-semibold text-[#171717]">Verdict history</h3>
+<span class="text-[10px] font-mono text-[#A3A3A3]">3 REVISIONS</span>
+</div>
+<div class="space-y-4">
+<!-- Version 3 (Current) -->
+<div class="relative pl-4 border-l border-[#E5E5E5]">
+<span class="absolute -left-[4px] top-1 w-[7px] h-[7px] rounded-full status-dot-outdated"></span>
+<div class="flex items-center gap-1.5 text-[11px] font-mono-code mb-0.5">
+<span class="text-[#171717] font-medium">14:20 IST</span>
+<span class="text-[#737373]">·</span>
+<span class="text-[#171717] font-medium">Outdated</span>
+</div>
+<p class="text-xs text-[#525252] leading-snug">
+                Superseded by KMC bulletin #4
+              </p>
+</div>
+<!-- Version 2 -->
+<div class="relative pl-4 border-l border-[#E5E5E5]">
+<span class="absolute -left-[4px] top-1 w-[7px] h-[7px] rounded-full status-dot-verified"></span>
+<div class="flex items-center gap-1.5 text-[11px] font-mono-code mb-0.5">
+<span class="text-[#171717]">10:00 IST</span>
+<span class="text-[#737373]">·</span>
+<span class="text-[#171717]">Verified</span>
+</div>
+<p class="text-xs text-[#525252] leading-snug">
+                Cross-referenced against DDMA order
+              </p>
+</div>
+<!-- Version 1 -->
+<div class="relative pl-4 border-l border-[#E5E5E5]">
+<span class="absolute -left-[4px] top-1 w-[7px] h-[7px] rounded-full status-dot-unverified"></span>
+<div class="flex items-center gap-1.5 text-[11px] font-mono-code mb-0.5">
+<span class="text-[#171717]">09:25 IST</span>
+<span class="text-[#737373]">·</span>
+<span class="text-[#171717]">Unverified</span>
+</div>
+<p class="text-xs text-[#525252] leading-snug">
+                Awaiting official confirmation
+              </p>
+</div>
+</div>
+</div>
+<!-- Action Buttons Cluster -->
+<div class="space-y-2">
+<button class="w-full h-9 bg-[#0F766E] hover:bg-[#115E59] text-white text-xs font-medium rounded transition-colors flex items-center justify-center" type="button">
+            Re-check now
+          </button>
+<button class="w-full h-9 bg-white border border-[#E5E5E5] hover:bg-[#FAFAFA] text-[#171717] text-xs font-medium rounded transition-colors flex items-center justify-center" type="button">
+            Copy summary
+          </button>
+<button class="w-full h-9 bg-white border border-[#E5E5E5] hover:bg-[#FAFAFA] text-[#525252] hover:text-[#171717] text-xs rounded transition-colors flex items-center justify-center" type="button">
+            Flag for review
+          </button>
+</div>
+<!-- Audit Note -->
+<div class="p-3 border border-[#E5E5E5] rounded bg-surface-container-low text-center">
+<div class="text-[11px] font-mono-code uppercase text-[#A3A3A3] tracking-tight">
+            AUDIT ID #SV-99420-KLH · ATTESTED ON-CHAIN
+          </div>
+<div class="text-[10px] font-mono text-[#737373] mt-1">
+            SHA256: 8f9b...e4a1
+          </div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Minimal Utility Footer (Shared Component Anchor) -->
+<footer class="bg-surface-container-lowest border-t border-[#E5E5E5] docked full-width bottom-0 mt-16">
+<div class="flex flex-col md:flex-row justify-between items-center py-6 px-6 max-w-[1440px] mx-auto w-full gap-4">
+<span class="font-headline text-xs text-[#525252]">
+        © 2025 SachVerify. All verification records cryptographically attested.
+      </span>
+<div class="flex items-center gap-6 text-xs font-label">
+<a class="text-secondary hover:text-on-surface transition-colors" href="#">Methodology</a>
+<a class="text-secondary hover:text-on-surface transition-colors" href="#">API &amp; Schema</a>
+<a class="text-secondary hover:text-on-surface transition-colors" href="#">Audit Trail</a>
+<a class="text-secondary hover:text-on-surface transition-colors" href="#">Status</a>
+<a class="text-secondary hover:text-on-surface transition-colors" href="#">Privacy</a>
+</div>
+</div>
+</footer>
+</body></html>

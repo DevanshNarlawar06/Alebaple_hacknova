@@ -1,0 +1,102 @@
+{
+  "schema_version": "0.1",
+  "description": "Source credibility registry for Disaster Info Verification System",
+  "credibility_tiers": {
+    "A": "Official government or intergovernmental agency (UN, NDMA, national meteorological service). Highest authority.",
+    "B": "Established humanitarian organization with verified operations (ReliefWeb, OCHA, Red Cross). High credibility.",
+    "C": "Credible news media or verified research publication. Medium credibility \u2014 verify with Tier A/B where possible.",
+    "D": "Social media, unverified reports, crowdsourced. Low credibility \u2014 use as claims only, not as authoritative evidence."
+  },
+  "sources": [
+    {
+      "source_id": "src_gdacs",
+      "source_name": "GDACS \u2014 Global Disaster Alert and Coordination System",
+      "source_type": "official_agency",
+      "source_url": "https://www.gdacs.org",
+      "authority_level": 5,
+      "officiality": "official",
+      "timestamp_precision": "exact",
+      "geographic_precision": "coordinate",
+      "license": "REQUIRES_REVIEW \u2014 confirm at https://www.gdacs.org/about.aspx",
+      "retrieval_method": "rss",
+      "credibility_tier": "A",
+      "notes": "Run by European Commission and UN OCHA. Provides GeoJSON and RSS feeds of active/recent disasters worldwide. Public feed does not require registration.",
+      "data_available": [
+        "event_type",
+        "coordinates",
+        "alert_level",
+        "timestamp",
+        "country",
+        "affected_population_estimate"
+      ],
+      "schema_version": "0.1"
+    },
+    {
+      "source_id": "src_reliefweb",
+      "source_name": "ReliefWeb \u2014 OCHA humanitarian information platform",
+      "source_type": "humanitarian_org",
+      "source_url": "https://reliefweb.int",
+      "authority_level": 4,
+      "officiality": "official",
+      "timestamp_precision": "exact",
+      "geographic_precision": "country",
+      "license": "REQUIRES_REVIEW \u2014 confirm at https://reliefweb.int/terms-conditions",
+      "retrieval_method": "api",
+      "credibility_tier": "B",
+      "notes": "Managed by OCHA. Public REST API available at https://apidoc.reliefweb.int \u2014 no key required for basic access. Provides humanitarian situation reports, disaster updates with country, date, and event type metadata.",
+      "data_available": [
+        "report_text",
+        "country",
+        "date_published",
+        "disaster_type",
+        "source_org",
+        "url"
+      ],
+      "schema_version": "0.1"
+    },
+    {
+      "source_id": "src_crisismmd",
+      "source_name": "CrisisMMD \u2014 Crisis Multimodal Dataset",
+      "source_type": "research",
+      "source_url": "https://crisisnlp.qcri.org/crisismmd",
+      "authority_level": 2,
+      "officiality": "unofficial",
+      "timestamp_precision": "approximate",
+      "geographic_precision": "unknown",
+      "license": "REQUIRES_HUMAN_ACCEPTANCE \u2014 research dataset, terms at source URL",
+      "retrieval_method": "manual_download",
+      "credibility_tier": "D",
+      "notes": "Social-media posts (Twitter) about disasters, annotated for informativeness and humanitarian categories. Use as CLAIMS source only, NOT as authoritative evidence. Requires manual download after accepting terms.",
+      "data_available": [
+        "tweet_text",
+        "image_url",
+        "event_type",
+        "humanitarian_category",
+        "informativeness_label"
+      ],
+      "access_status": "PENDING_MANUAL_DOWNLOAD",
+      "schema_version": "0.1"
+    },
+    {
+      "source_id": "src_ndma",
+      "source_name": "NDMA \u2014 National Disaster Management Authority India",
+      "source_type": "official_agency",
+      "source_url": "https://ndma.gov.in",
+      "authority_level": 5,
+      "officiality": "official",
+      "timestamp_precision": "date_only",
+      "geographic_precision": "region",
+      "license": "REQUIRES_REVIEW \u2014 Indian government open data policy",
+      "retrieval_method": "manual_download",
+      "credibility_tier": "A",
+      "notes": "Official Indian disaster management authority. No stable public API known as of 2026-10. Access method requires human evaluation \u2014 web scraping legality must be confirmed. Covers India-specific disasters only.",
+      "data_available": [
+        "disaster_alerts",
+        "guidelines",
+        "situation_reports"
+      ],
+      "access_status": "PENDING_ACCESS_METHOD_DECISION",
+      "schema_version": "0.1"
+    }
+  ]
+}

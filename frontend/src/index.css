@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; }
+body { @apply bg-white text-ink font-sans antialiased; }
+.label { @apply font-mono text-[11px] uppercase tracking-[0.08em] text-ink-3; }
+.card { @apply bg-white border border-line rounded-lg; }
+.btn { @apply inline-flex items-center justify-center gap-1.5 rounded px-3 py-1.5 text-xs font-medium transition-colors; }
+.btn-primary { @apply btn bg-accent text-white hover:bg-accent-hover disabled:opacity-50; }
+.btn-ghost { @apply btn bg-white border border-line text-ink hover:bg-subtle; }
+.chip { @apply px-2.5 py-1 rounded-full border border-line text-xs text-ink-2 hover:bg-subtle; }
+.chip-on { @apply border-accent text-accent; }
+.leaflet-container { font-family: Inter, sans-serif; background: #f6f6f6; }
+.leaflet-tooltip { @apply font-mono text-[11px] border border-line shadow-none rounded; }
+
+.map-tiles-mono { filter: grayscale(1) contrast(0.9) brightness(1.06); }

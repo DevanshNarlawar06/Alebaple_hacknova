@@ -1,0 +1,272 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" width="1400" height="990" font-family="Segoe UI, Inter, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b45309"/>
+    </marker>
+    <style>
+      .t{font-size:13px;fill:#1e293b}
+      .s{font-size:11.5px;fill:#475569}
+      .h{font-size:13px;font-weight:700;letter-spacing:.06em;fill:#0f172a}
+      .n{font-size:13px;font-weight:600;fill:#0f172a}
+      .box{rx:10;stroke-width:1.5}
+      .node{rx:7;fill:#fff;stroke:#94a3b8;stroke-width:1.2}
+      .flow{stroke:#475569;stroke-width:2;fill:none;marker-end:url(#a)}
+      .evt{stroke:#b45309;stroke-width:2;fill:none;stroke-dasharray:6 4;marker-end:url(#ar)}
+    </style>
+  </defs>
+  <rect width="1400" height="990" fill="#ffffff"/>
+
+  <text x="20" y="34" font-size="22" font-weight="800" fill="#0f172a">SachVerify — System Architecture</text>
+  <text x="20" y="56" class="s">Disaster Information Verification Agent (PS-2) + Beacon verified-alert app · everything runs locally; snapshot mode works offline</text>
+
+  <!-- ============ COLUMN 1: SOURCES ============ -->
+  <rect x="20" y="78" width="275" height="178" class="box" fill="#eef2ff" stroke="#6366f1"/>
+  <text x="34" y="100" class="h">POSTS IN</text>
+  <rect x="32" y="110" width="251" height="44" class="node"/>
+  <text x="42" y="128" class="n">Tipline (forward to us)</text>
+  <text x="42" y="145" class="s">paste text · link · screenshot · video</text>
+  <rect x="32" y="160" width="251" height="40" class="node"/>
+  <text x="42" y="177" class="n">Open social feeds</text>
+  <text x="42" y="193" class="s">Mastodon public API</text>
+  <rect x="32" y="206" width="251" height="40" class="node"/>
+  <text x="42" y="223" class="n">Scenario replay</text>
+  <text x="42" y="239" class="s">labelled synthetic + CrisisMMD-style</text>
+
+  <rect x="20" y="272" width="275" height="478" class="box" fill="#ecfdf5" stroke="#10b981"/>
+  <text x="34" y="294" class="h">EVIDENCE SOURCES · 5 LAYERS</text>
+  <text x="34" y="311" class="s">weighted by trust · grouped by independence</text>
+  <!-- tiers -->
+  <rect x="32" y="322" width="251" height="78" class="node"/>
+  <text x="42" y="341" class="n">1 · Official</text>
+  <text x="42" y="358" class="s">NDMA SACHET CAP alerts</text>
+  <text x="42" y="373" class="s">(area polygons, severity, expiry)</text>
+  <text x="42" y="389" class="s">GDACS global alerts</text>
+  <rect x="32" y="406" width="251" height="64" class="node"/>
+  <text x="42" y="425" class="n">2 · Sensors (can't lie)</text>
+  <text x="42" y="442" class="s">Open-Meteo rain / wind / temperature</text>
+  <text x="42" y="458" class="s">USGS earthquakes</text>
+  <rect x="32" y="476" width="251" height="78" class="node"/>
+  <text x="42" y="495" class="n">3 · Local news (fastest)</text>
+  <text x="42" y="512" class="s">Google News RSS by city · hi / mr / en</text>
+  <text x="42" y="527" class="s">YouTube RSS: regional channels</text>
+  <text x="42" y="543" class="s">(e.g. Lokmat, TV9 Marathi)</text>
+  <rect x="32" y="560" width="251" height="64" class="node"/>
+  <text x="42" y="579" class="n">4 · National / global</text>
+  <text x="42" y="596" class="s">NDTV · Times of India · GDACS</text>
+  <text x="42" y="612" class="s">GDELT (throttled, 1 req / 5 s)</text>
+  <rect x="32" y="630" width="251" height="48" class="node"/>
+  <text x="42" y="649" class="n">5 · Other posts</text>
+  <text x="42" y="666" class="s">independent people, same story</text>
+  <rect x="32" y="684" width="251" height="56" class="node" fill="#f8fafc"/>
+  <text x="42" y="703" class="n">Geo reference</text>
+  <text x="42" y="720" class="s">GeoNames India gazetteer (offline)</text>
+  <text x="42" y="735" class="s">Nominatim (cached, 1 req/s)</text>
+
+  <!-- ============ COLUMN 2: INGEST + TRIAGE ============ -->
+  <rect x="325" y="78" width="250" height="262" class="box" fill="#f1f5f9" stroke="#64748b"/>
+  <text x="339" y="100" class="h">INGESTOR AGENT</text>
+  <text x="339" y="124" class="t">Scheduler polls every 2–10 min</text>
+  <text x="339" y="146" class="t">Typed connectors with</text>
+  <text x="339" y="163" class="t">timeouts + response cache</text>
+  <text x="339" y="185" class="t">Snapshot mode → offline demo</text>
+  <text x="339" y="207" class="t">Normalise to: alerts ·</text>
+  <text x="339" y="224" class="t">observations · news_items · posts</text>
+  <text x="339" y="246" class="t">Copied-source rule: near-identical</text>
+  <text x="339" y="263" class="t">articles → 1 source (earliest</text>
+  <text x="339" y="280" class="t">publisher kept)</text>
+  <text x="339" y="304" class="s">emits  new_evidence  events</text>
+  <text x="339" y="322" class="s">→ Watcher agent</text>
+
+  <rect x="325" y="372" width="250" height="378" class="box" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="339" y="394" class="h">TRIAGE: WHICH POSTS?</text>
+  <rect x="337" y="406" width="226" height="50" class="node"/>
+  <text x="347" y="425" class="n">Language ID</text>
+  <text x="347" y="442" class="s">en / hi / mr / te + script check</text>
+  <rect x="337" y="466" width="226" height="64" class="node"/>
+  <text x="347" y="485" class="n">Worth checking?</text>
+  <text x="347" y="502" class="s">factual claim vs prayer / opinion;</text>
+  <text x="347" y="518" class="s">has a hazard + place or time</text>
+  <rect x="337" y="540" width="226" height="64" class="node"/>
+  <text x="347" y="559" class="n">Priority score</text>
+  <text x="347" y="576" class="s">severity × spread speed ×</text>
+  <text x="347" y="592" class="s">nearness to Beacon users</text>
+  <rect x="337" y="614" width="226" height="80" class="node"/>
+  <text x="347" y="633" class="n">Story grouping</text>
+  <text x="347" y="650" class="s">multilingual embeddings group</text>
+  <text x="347" y="666" class="s">200 posts → 1 story;</text>
+  <text x="347" y="682" class="s">verify once, label all</text>
+  <text x="347" y="716" class="s">not a claim → archived, skipped</text>
+  <text x="347" y="734" class="s">highest priority goes first</text>
+
+  <!-- ============ COLUMN 3: VERIFIER AGENT ============ -->
+  <rect x="605" y="78" width="405" height="672" class="box" fill="#f0f9ff" stroke="#0ea5e9"/>
+  <text x="619" y="100" class="h">VERIFIER AGENT · BOUNDED STATE GRAPH</text>
+  <text x="619" y="117" class="s">deterministic steps · LLM only at 2 narrow points · full trace stored</text>
+
+  <rect x="625" y="128" width="365" height="44" class="node"/>
+  <text x="637" y="147" class="n">1 Extract + split into atomic facts</text>
+  <text x="637" y="164" class="s">core / detail · factual / subjective (Gemini or local, grounded)</text>
+  <rect x="625" y="182" width="365" height="44" class="node"/>
+  <text x="637" y="201" class="n">2 Geocode + bind to one event</text>
+  <text x="637" y="218" class="s">never invents coords · Puebla ≠ Tehuantepec</text>
+  <rect x="625" y="236" width="365" height="44" class="node"/>
+  <text x="637" y="255" class="n">3 Route by hazard</text>
+  <text x="637" y="272" class="s">flood → CAP + rain + news · quake → USGS + news · …</text>
+  <rect x="625" y="290" width="365" height="44" class="node"/>
+  <text x="637" y="309" class="n">4 Retrieve evidence (all 5 layers)</text>
+  <text x="637" y="326" class="s">same hazard ∧ near place ∧ time window; empty → widen once</text>
+  <path d="M990,312 C1004,312 1004,258 990,258" class="evt"/>
+
+  <text x="625" y="356" class="n">5 Checks (run in parallel)</text>
+  <rect x="625" y="364" width="117" height="56" class="node"/>
+  <text x="633" y="383" class="n">Stance</text>
+  <text x="633" y="399" class="s">supports /</text>
+  <text x="633" y="413" class="s">contradicts (NLI)</text>
+  <rect x="749" y="364" width="117" height="56" class="node"/>
+  <text x="757" y="383" class="n">Numbers</text>
+  <text x="757" y="399" class="s">claimed mm, mag.</text>
+  <text x="757" y="413" class="s">vs sensors</text>
+  <rect x="873" y="364" width="117" height="56" class="node"/>
+  <text x="881" y="383" class="n">Place</text>
+  <text x="881" y="399" class="s">inside alert</text>
+  <text x="881" y="413" class="s">polygon? distance</text>
+  <rect x="625" y="428" width="117" height="56" class="node"/>
+  <text x="633" y="447" class="n">Freshness</text>
+  <text x="633" y="463" class="s">validity window,</text>
+  <text x="633" y="477" class="s">superseded-by</text>
+  <rect x="749" y="428" width="117" height="56" class="node"/>
+  <text x="757" y="447" class="n">Timing</text>
+  <text x="757" y="463" class="s">who reported first;</text>
+  <text x="757" y="477" class="s">old coverage only?</text>
+  <rect x="873" y="428" width="117" height="56" class="node"/>
+  <text x="881" y="447" class="n">Media</text>
+  <text x="881" y="463" class="s">recycled? scene vs</text>
+  <text x="881" y="477" class="s">caption vs weather</text>
+
+  <rect x="625" y="500" width="365" height="58" class="node" stroke="#0ea5e9" stroke-width="1.8"/>
+  <text x="637" y="519" class="n">6 Decide: rule table</text>
+  <text x="637" y="536" class="s">S = Σ trust·fresh·place·p(support)  ·  C = same for contradict</text>
+  <text x="637" y="551" class="s">per fact; absence ⇒ UNVERIFIED  ·  HISTORICAL vs CURRENT</text>
+  <rect x="625" y="568" width="365" height="44" class="node"/>
+  <text x="637" y="587" class="n">7 Explain</text>
+  <text x="637" y="604" class="s">template cites evidence IDs; LLM rephrase is grounded</text>
+
+  <!-- status chips -->
+  <rect x="625" y="626" width="86" height="28" rx="14" fill="#16a34a"/>
+  <text x="668" y="645" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">VERIFIED</text>
+  <rect x="718" y="626" width="102" height="28" rx="14" fill="#ea580c"/>
+  <text x="769" y="645" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">CONFLICTING</text>
+  <rect x="827" y="626" width="84" height="28" rx="14" fill="#64748b"/>
+  <text x="869" y="645" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">OUTDATED</text>
+  <rect x="918" y="626" width="72" height="28" rx="14" fill="#2563eb"/>
+  <text x="954" y="645" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">UNVERIFIED</text>
+  <text x="625" y="676" class="s">+ evidence for/against · source · time · place · confidence</text>
+  <text x="625" y="700" class="s">Guardrails: JSON schema · extracted text must be in post ·</text>
+  <text x="625" y="716" class="s">explanation numbers must exist in evidence ·</text>
+  <text x="625" y="732" class="s">timeouts → rules-only fallback · max 1 widening</text>
+
+  <!-- ML runtime -->
+  <rect x="605" y="772" width="405" height="128" class="box" fill="#faf5ff" stroke="#a855f7"/>
+  <text x="619" y="794" class="h">LOCAL ML RUNTIME · RTX 4050 6 GB</text>
+  <text x="619" y="816" class="t">mDeBERTa-v3 XNLI: multilingual stance</text>
+  <text x="619" y="835" class="t">multilingual-e5-small: retrieval + story grouping</text>
+  <text x="619" y="854" class="t">Qwen2.5-3B via Ollama: extraction gap-fill</text>
+  <text x="619" y="873" class="t">CLIP ViT-B/32 + pHash: media checks</text>
+  <text x="619" y="892" class="s">≈ 3.8 GB VRAM total · no API keys · no data leaves the laptop</text>
+
+  <!-- ============ COLUMN 4: STORAGE, AGENTS, API, UI ============ -->
+  <rect x="1040" y="78" width="340" height="170" class="box" fill="#fefce8" stroke="#ca8a04"/>
+  <text x="1054" y="100" class="h">STORAGE · SQLite (WAL) + SQLModel</text>
+  <text x="1054" y="123" class="t">schema v0.1 → v0.2 (handover base)</text>
+  <text x="1054" y="142" class="t">sources · claims · propositions · evidence</text>
+  <text x="1054" y="161" class="t">links · ground_truth_cases · stories</text>
+  <text x="1054" y="180" class="t">verdicts (versioned) · observations</text>
+  <text x="1054" y="199" class="t">subscriptions · notifications · eval_runs</text>
+  <text x="1054" y="221" class="s">embeddings stored as BLOBs; numpy cosine search</text>
+  <text x="1054" y="237" class="s">(fewer than 10k rows → no vector DB needed)</text>
+
+  <rect x="1040" y="264" width="340" height="70" class="box" fill="#fff7ed" stroke="#b45309"/>
+  <text x="1054" y="285" class="h">WATCHER AGENT</text>
+  <text x="1054" y="305" class="t">new evidence in an area → re-verify stories</text>
+  <text x="1054" y="323" class="t">from the last 48 h → push status changes</text>
+
+  <rect x="1040" y="348" width="340" height="88" class="box" fill="#fef2f2" stroke="#dc2626"/>
+  <text x="1054" y="369" class="h">BEACON AGENT</text>
+  <text x="1054" y="389" class="t">threat level per subscribed location</text>
+  <text x="1054" y="408" class="t">RED only on official or verified evidence</text>
+  <text x="1054" y="427" class="t">social alone → YELLOW at most · rumour checks</text>
+
+  <rect x="1040" y="452" width="340" height="88" class="box" fill="#f1f5f9" stroke="#64748b"/>
+  <text x="1054" y="473" class="h">API · FastAPI</text>
+  <text x="1054" y="493" class="t">REST: /claims /stories /alerts /map</text>
+  <text x="1054" y="511" class="t">/beacon /tipline /eval /admin/replay</text>
+  <text x="1054" y="530" class="t">SSE /stream: live verdicts, alerts, alarms</text>
+
+  <rect x="1040" y="556" width="340" height="150" class="box" fill="#eef2ff" stroke="#6366f1"/>
+  <text x="1054" y="577" class="h">CONSOLE · responders (React + Leaflet)</text>
+  <text x="1054" y="598" class="t">Story feed with status + confidence</text>
+  <text x="1054" y="617" class="t">Evidence: For / Against columns</text>
+  <text x="1054" y="636" class="t">Map: alert polygons, claim pins, quakes</text>
+  <text x="1054" y="655" class="t">Verdict timeline (how status changed)</text>
+  <text x="1054" y="674" class="t">Check-a-post box · replay controls</text>
+  <text x="1054" y="693" class="t">Eval page: F1, confusion matrix, ablations</text>
+
+  <rect x="1040" y="720" width="340" height="180" class="box" fill="#fef2f2" stroke="#dc2626"/>
+  <text x="1054" y="741" class="h">BEACON · citizens (mobile web app)</text>
+  <rect x="1054" y="752" width="100" height="26" rx="6" fill="#16a34a"/>
+  <text x="1104" y="770" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff">ALL CLEAR</text>
+  <rect x="1160" y="752" width="100" height="26" rx="6" fill="#eab308"/>
+  <text x="1210" y="770" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff">WATCH</text>
+  <rect x="1266" y="752" width="100" height="26" rx="6" fill="#dc2626"/>
+  <text x="1316" y="770" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff">ALERT · beep</text>
+  <text x="1054" y="800" class="t">Alarm tone + vibration + notification</text>
+  <text x="1054" y="819" class="t">"Why": evidence source + expiry time</text>
+  <text x="1054" y="838" class="t">Rumour cards: "viral dam-burst video is</text>
+  <text x="1054" y="857" class="t">from 2019, not current: don't panic"</text>
+  <text x="1054" y="879" class="s">location stays on the device; server stores</text>
+  <text x="1054" y="894" class="s">only rounded coordinates</text>
+
+  <!-- ============ ARROWS ============ -->
+  <!-- posts -> ingestor -->
+  <path d="M295,165 L323,165" class="flow"/>
+  <!-- evidence -> ingestor -->
+  <path d="M295,300 L310,300 L310,200 L323,200" class="flow"/>
+  <!-- ingestor -> triage -->
+  <path d="M450,340 L450,370" class="flow"/>
+  <!-- triage -> verifier -->
+  <path d="M575,654 L590,654 L590,150 L623,150" class="flow"/>
+  <!-- geo -> geocode -->
+  <path d="M283,712 L300,712 L300,762 L598,762 L598,204 L623,204" class="flow" stroke-opacity=".55"/>
+  <!-- ingestor -> storage (over the top) -->
+  <path d="M450,78 L450,66 L1210,66 L1210,76" class="flow"/>
+  <text x="760" y="62" class="s">alerts · observations · news · posts</text>
+  <!-- verifier <-> ML -->
+  <path d="M807,752 L807,770" class="flow"/>
+  <path d="M827,770 L827,752" class="flow"/>
+  <!-- verifier -> storage -->
+  <path d="M1010,160 L1038,160" class="flow"/>
+  <!-- storage -> watcher (event) -->
+  <path d="M1360,248 L1360,262" class="evt"/>
+  <!-- watcher -> verifier (re-verify) -->
+  <path d="M1040,300 L1012,300" class="evt"/>
+  <!-- storage/watcher -> beacon -->
+  <path d="M1360,334 L1360,346" class="evt"/>
+  <!-- beacon -> api -->
+  <path d="M1210,436 L1210,450" class="flow"/>
+  <!-- api -> console -->
+  <path d="M1210,540 L1210,554" class="flow"/>
+  <!-- console -> beacon UI side link -->
+  <path d="M1370,540 L1390,540 L1390,810 L1382,810" class="flow"/>
+
+  <!-- legend -->
+  <rect x="20" y="918" width="1360" height="56" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <path d="M40,946 L90,946" class="flow"/>
+  <text x="100" y="950" class="t">data flow</text>
+  <path d="M190,946 L240,946" class="evt"/>
+  <text x="250" y="950" class="t">event / trigger</text>
+  <text x="400" y="942" class="s">Phase 1 (official PS-2 requirements): sources → triage → verifier → storage → API → Console + map</text>
+  <text x="400" y="960" class="s">Phase 2: Beacon agent + Beacon app   ·   Phase 3: Media checks (recycled media, scene vs caption)</text>
+</svg>

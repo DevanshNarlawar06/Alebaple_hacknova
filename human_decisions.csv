@@ -1,0 +1,6 @@
+decision_id,date,stage,record_id,question,options,selected_option,reason,reviewer
+DEC-001,2026-10-23,ARCHITECTURE_APPROVAL,architecture_proposal.md,"Approve proposed application architecture, schema v0.1, folder structure, source plan, and start order A (infrastructure first)?",Approve / Request changes,Approve,User approved full proposal document without changes,human
+DEC-002,2026-10-23,MERGE_HANDOVER,PRD v1.2,Continue handover benchmark vs merge into SachVerify PRD?,A merge / B handover-first / C ignore,A,User chose A (merge),human
+DEC-003,2026-10-23,SCHEMA_MIGRATION,schema v0.2,Apply additive migration v0.1→v0.2?,Approve / Reject,Approve,User instructed to start building; migration is additive with backup,agent+user
+DEC-004,2026-10-23,SOURCE_ACCESS,src_ndma,NDMA access method (PMA-004)?,A manual / B scraping / C skip / D SACHET CAP feed,D,SACHET is NDMA's official public CAP feed; no scraping needed,agent+user
+DEC-005,2026-10-23,SOURCE_ACCESS,src_reliefweb,ReliefWeb live API?,Live / Cached-only,Cached-only,Configured appname returns 403 (not approved) on 2026-10-23,agent+user

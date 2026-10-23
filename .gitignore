@@ -1,0 +1,43 @@
+# Secrets — NEVER commit
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Dataset raw — may be large or license-restricted
+dataset/raw/
+
+# Database files — generated, not source
+data/db/evidence.db
+data/db/evidence.db-wal
+data/db/evidence.db-shm
+data/db/chroma/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Local/derived
+data/raw/
+data/db/backups/
+.venv/
+*.pyc
+node_modules/
+frontend/dist/

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-white" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Beacon - Check a message</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "tertiary-container": "#747474",
+            "on-error-container": "#410002",
+            "secondary-fixed-dim": "#ababab",
+            "on-background": "#1b1c1c",
+            "inverse-on-surface": "#f2f0f0",
+            "on-tertiary": "#e2e2e2",
+            "on-surface-variant": "#474747",
+            "tertiary-fixed-dim": "#474747",
+            "secondary-fixed": "#c6c6c6",
+            "surface-tint": "#5f5e5e",
+            "surface": "#fbf9f9",
+            "error-container": "#ffdad6",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#5e5e5e",
+            "on-primary-fixed-variant": "#e5e2e1",
+            "on-primary-container": "#ffffff",
+            "secondary-container": "#d4d4d4",
+            "on-primary": "#e5e2e1",
+            "primary-fixed": "#5f5e5e",
+            "on-tertiary-fixed-variant": "#e2e2e2",
+            "surface-container-low": "#f5f3f3",
+            "inverse-primary": "#c8c6c5",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "on-primary-fixed": "#ffffff",
+            "surface-container-high": "#e9e8e7",
+            "background": "#fbf9f9",
+            "outline-variant": "#c6c6c6",
+            "on-secondary-fixed": "#1b1b1b",
+            "primary": "#171717",
+            "tertiary": "#3b3b3b",
+            "surface-bright": "#fbf9f9",
+            "primary-fixed-dim": "#474746",
+            "inverse-surface": "#303031",
+            "surface-container-highest": "#e3e2e2",
+            "surface-container": "#efeded",
+            "on-surface": "#1b1c1c",
+            "outline": "#777777",
+            "on-tertiary-fixed": "#ffffff",
+            "surface-dim": "#dbdad9",
+            "on-secondary-fixed-variant": "#3b3b3b",
+            "on-secondary-container": "#1b1b1b",
+            "primary-container": "#3c3b3b",
+            "surface-variant": "#e3e2e2",
+            "on-secondary": "#ffffff",
+            "secondary": "#525252",
+            "on-tertiary-container": "#ffffff"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            "headline": ["Inter", "sans-serif"],
+            "display": ["Inter", "sans-serif"],
+            "body": ["Inter", "sans-serif"],
+            "label": ["Inter", "sans-serif"],
+            "mono": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Strictly minimal overrides */
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background-color: #FFFFFF;
+      color: #171717;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      font-size: 20px;
+      line-height: 1;
+    }
+    textarea:focus {
+      outline: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="min-h-full flex justify-center bg-[#FAFAFA]">
+<!-- Mobile Container (390px x 844px context) -->
+<div class="w-full max-w-[390px] min-h-screen bg-white relative flex flex-col justify-between pb-24 shadow-none">
+<!-- Top Shell / TopAppBar -->
+<header class="w-full bg-white z-40">
+<div class="flex justify-between items-center w-full px-4 h-14 max-w-md mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#525252]" data-icon="verified_user">verified_user</span>
+<span class="font-headline text-base font-semibold tracking-tight text-[#171717]">Beacon</span>
+</div>
+<button aria-label="Settings" class="text-[#525252] hover:text-[#171717] transition-colors p-1 flex items-center justify-center" type="button">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-4 pt-2">
+<!-- Title Section -->
+<section class="mb-5">
+<h1 class="text-[28px] font-semibold text-[#171717] tracking-tight leading-tight">Check a message</h1>
+<p class="text-[14px] text-[#525252] mt-1.5 leading-normal">Paste something you received. We'll check it against official sources.</p>
+</section>
+<!-- Input Area & Actions -->
+<section class="space-y-3">
+<div class="relative bg-[#FAFAFA] border border-[#E5E5E5] rounded-lg p-3 transition-colors focus-within:border-[#171717]">
+<textarea class="w-full bg-transparent border-0 p-0 text-[14px] text-[#171717] placeholder-[#A3A3A3] resize-none focus:ring-0 leading-relaxed font-body" id="message-input" placeholder="Type or paste text..." rows="5">Khadakwasla dam gates have burst!! Evacuate now, forward to everyone</textarea>
+</div>
+<!-- Secondary Outline Utility Buttons -->
+<div class="flex items-center gap-2">
+<button class="flex-1 inline-flex items-center justify-center gap-1.5 bg-white border border-[#E5E5E5] rounded-lg py-2 px-3 text-xs font-medium text-[#171717] active:bg-[#FAFAFA] transition-colors" type="button">
+<svg class="w-4 h-4 text-[#525252]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
+<rect height="4" rx="1" ry="1" width="8" x="8" y="2"></rect>
+<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+</svg>
+            Paste
+          </button>
+<button class="flex-1 inline-flex items-center justify-center gap-1.5 bg-white border border-[#E5E5E5] rounded-lg py-2 px-3 text-xs font-medium text-[#171717] active:bg-[#FAFAFA] transition-colors" type="button">
+<svg class="w-4 h-4 text-[#525252]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
+<rect height="18" rx="2" ry="2" width="18" x="3" y="3"></rect>
+<circle cx="9" cy="9" r="2"></circle>
+<path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+</svg>
+            Add photo/video
+          </button>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full bg-[#171717] text-white font-medium text-[14px] rounded-lg py-3 active:opacity-90 transition-opacity flex items-center justify-center" style="background-color: #0F766E;" type="button">
+          Check
+        </button>
+<!-- Loading State Progress Indicator -->
+<div class="pt-1 pb-1">
+<div class="w-full h-[2px] bg-[#E5E5E5] rounded-full overflow-hidden">
+<div class="h-full bg-[#171717] w-[70%]"></div>
+</div>
+<p class="text-[12px] text-[#525252] mt-2 font-body">Searching official alerts…</p>
+</div>
+</section>
+<!-- Verification Result Card -->
+<section class="mt-4">
+<article class="bg-white border border-[#E5E5E5] rounded-lg p-4">
+<!-- Top Row: Status Pill -->
+<div class="flex items-center justify-between">
+<div class="inline-flex items-center gap-1.5 bg-white border border-[#E5E5E5] rounded-full px-2.5 py-0.5">
+<span aria-hidden="true" class="w-[6px] h-[6px] rounded-full bg-[#A88442]"></span>
+<span class="text-[12px] font-medium text-[#171717]">Conflicting</span>
+</div>
+</div>
+<!-- Headline -->
+<h2 class="text-[20px] font-semibold text-[#171717] leading-snug mt-2.5 tracking-tight">
+            Dam burst is not confirmed
+          </h2>
+<!-- Explanation -->
+<p class="text-[14px] text-[#525252] leading-relaxed mt-2 font-body">
+            The irrigation department says gates were opened in a controlled way. No official source reports a burst.
+          </p>
+<!-- Metadata -->
+<div class="mt-3">
+<span class="font-mono text-[12px] text-[#A3A3A3] tracking-tight">Seen 23 times today</span>
+</div>
+<!-- Actions -->
+<div class="mt-4 flex gap-2 pt-1">
+<button class="flex-1 bg-[#171717] text-white text-xs font-medium py-2 px-4 rounded-lg text-center active:opacity-90 transition-opacity" style="background-color: #0F766E;" type="button">
+              See evidence
+            </button>
+<button class="bg-white border border-[#E5E5E5] text-[#171717] text-xs font-medium py-2 px-4 rounded-lg flex items-center justify-center gap-1.5 active:bg-[#FAFAFA] transition-colors" type="button">
+<svg class="w-3.5 h-3.5 text-[#525252]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
+<circle cx="18" cy="5" r="3"></circle>
+<circle cx="6" cy="12" r="3"></circle>
+<circle cx="18" cy="19" r="3"></circle>
+<line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line>
+<line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line>
+</svg>
+              Share result
+            </button>
+</div>
+</article>
+</section>
+</main>
+<!-- BottomNavBar (Shared Component) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 pb-safe bg-surface-container-lowest border-t border-[#E5E5E5] max-w-[390px] left-1/2 -translate-x-1/2">
+<!-- Item: Home -->
+<a class="flex flex-col items-center justify-center text-[#A3A3A3] py-1 hover:text-[#171717] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label text-xs tracking-normal mt-0.5">Home</span>
+</a>
+<!-- Item: Map -->
+<a class="flex flex-col items-center justify-center text-[#A3A3A3] py-1 hover:text-[#171717] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label text-xs tracking-normal mt-0.5">Map</span>
+</a>
+<!-- Item: Check (Active) -->
+<a class="flex flex-col items-center justify-center text-[#171717] font-medium py-1" href="#" style="color: #0F766E;">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+<span class="font-label text-xs tracking-normal mt-0.5 font-medium">Check</span>
+</a>
+<!-- Item: Settings -->
+<a class="flex flex-col items-center justify-center text-[#A3A3A3] py-1 hover:text-[#171717] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span class="font-label text-xs tracking-normal mt-0.5">Settings</span>
+</a>
+</nav>
+</div>
+</body></html>

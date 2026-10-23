@@ -1,0 +1,74 @@
+{
+  "schema_version": "0.1",
+  "workflow_version": "0.1",
+  "last_updated": "2026-10-23T08:52:03Z",
+  "current_stage": "INFRASTRUCTURE_COMPLETE",
+  "completed_stages": [
+    "PROJECT_INSPECTION",
+    "ARCHITECTURE_PROPOSAL",
+    "HUMAN_APPROVAL_ARCHITECTURE",
+    "FOLDER_STRUCTURE_CREATED",
+    "SCHEMA_CREATED",
+    "SQLITE_DB_INITIALIZED",
+    "ENV_TEMPLATE_CREATED",
+    "GITIGNORE_CREATED"
+  ],
+  "pending_manual_actions": [
+    {
+      "id": "PMA-001",
+      "description": "Provide Gemini API key in .env file",
+      "priority": "HIGH",
+      "blocking": "synthetic_data_generation"
+    },
+    {
+      "id": "PMA-002",
+      "description": "Manually download CrisisMMD dataset from CrisisNLP website after accepting terms of use",
+      "priority": "HIGH",
+      "blocking": "claims_from_crisismmd",
+      "url": "https://crisisnlp.qcri.org/crisismmd"
+    },
+    {
+      "id": "PMA-003",
+      "description": "Confirm ReliefWeb API terms of use before automated download begins",
+      "priority": "MEDIUM",
+      "blocking": "reliefweb_evidence_download"
+    },
+    {
+      "id": "PMA-004",
+      "description": "Evaluate NDMA India data access method and legality (scraping vs manual)",
+      "priority": "MEDIUM",
+      "blocking": "ndma_evidence_download"
+    }
+  ],
+  "datasets_available": {
+    "raw": {
+      "crisismmd": false,
+      "gdacs": false,
+      "reliefweb": false,
+      "ndma": false
+    },
+    "processed": {
+      "claims": false,
+      "evidence": false
+    },
+    "synthetic": false,
+    "ground_truth": false,
+    "benchmark": false
+  },
+  "sources_configured": [],
+  "records": {
+    "claims_downloaded": 0,
+    "claims_processed": 0,
+    "claims_validated": 0,
+    "evidence_downloaded": 0,
+    "evidence_processed": 0,
+    "links_created": 0,
+    "links_validated": 0,
+    "ground_truth_candidates": 0,
+    "ground_truth_human_validated": 0,
+    "benchmark_size": 0
+  },
+  "ground_truth_status": "NOT_STARTED",
+  "last_action": "Infrastructure files created and SQLite DB initialized from schema/schema.sql",
+  "next_action": "REQUIRES_HUMAN: (1) Confirm GDACS public feed terms and proceed with GDACS download, (2) Confirm ReliefWeb API terms, (3) Provide Gemini API key, (4) Download CrisisMMD manually"
+}

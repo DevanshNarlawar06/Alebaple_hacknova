@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-white" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Beacon — Active Alert</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary-container": "#ffffff",
+            "secondary-container": "#d4d4d4",
+            "on-error-container": "#410002",
+            "surface-container-highest": "#e3e2e2",
+            "on-secondary-fixed-variant": "#3b3b3b",
+            "on-error": "#ffffff",
+            "tertiary-fixed-dim": "#474747",
+            "primary-fixed-dim": "#474746",
+            "surface-container-low": "#f5f3f3",
+            "on-secondary": "#ffffff",
+            "surface": "#fbf9f9",
+            "error": "#ba1a1a",
+            "background": "#fbf9f9",
+            "tertiary-fixed": "#5e5e5e",
+            "tertiary": "#3b3b3b",
+            "primary-container": "#3c3b3b",
+            "on-background": "#1b1c1c",
+            "secondary": "#5e5e5e",
+            "on-primary-fixed-variant": "#e5e2e1",
+            "surface-dim": "#dbdad9",
+            "inverse-on-surface": "#f2f0f0",
+            "on-tertiary-fixed-variant": "#e2e2e2",
+            "on-primary": "#e5e2e1",
+            "surface-container": "#efeded",
+            "secondary-fixed": "#c6c6c6",
+            "outline-variant": "#c6c6c6",
+            "on-tertiary-fixed": "#ffffff",
+            "secondary-fixed-dim": "#ababab",
+            "primary-fixed": "#5f5e5e",
+            "on-primary-fixed": "#ffffff",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed": "#1b1b1b",
+            "on-surface": "#1b1c1c",
+            "surface-container-high": "#e9e8e7",
+            "tertiary-container": "#747474",
+            "on-secondary-container": "#1b1b1b",
+            "surface-bright": "#fbf9f9",
+            "on-primary-container": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "surface-tint": "#5f5e5e",
+            "on-surface-variant": "#474747",
+            "surface-variant": "#e3e2e2",
+            "on-tertiary": "#e2e2e2",
+            "primary": "#000000",
+            "inverse-surface": "#303031",
+            "outline": "#777777",
+            "inverse-primary": "#c8c6c5"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            headline: ["Inter", "sans-serif"],
+            display: ["Inter", "sans-serif"],
+            body: ["Inter", "sans-serif"],
+            label: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="h-full bg-[#FFFFFF] text-[#171717] font-body flex justify-center selection:bg-[#E5E5E5]">
+<!-- Mobile Viewport Frame (390 x 844) -->
+<div class="relative w-full max-w-[390px] h-[844px] bg-[#FFFFFF] flex flex-col overflow-hidden shadow-none border-x border-[#E5E5E5]">
+<!-- Shared Component: TopAppBar -->
+<header class="bg-surface-container-lowest flex justify-between items-center w-full px-4 h-14 shrink-0 border-b border-[#E5E5E5] z-30">
+<div class="flex items-center gap-2">
+<span class="text-secondary flex items-center">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</span>
+<span class="font-headline text-base font-semibold tracking-tight text-[#171717]">Beacon</span>
+</div>
+<!-- Location chip -->
+<button class="inline-flex items-center gap-1.5 rounded-full bg-white border border-[#E5E5E5] px-2.5 py-1 text-xs text-[#525252] hover:bg-[#FAFAFA] transition-colors">
+<span class="text-xs font-normal">Kothrud, Pune</span>
+<span class="material-symbols-outlined text-[13px] text-[#737373]">expand_more</span>
+</button>
+<!-- Settings Icon -->
+<button aria-label="Settings" class="text-secondary hover:text-[#171717] transition-colors flex items-center p-1 rounded-full">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</header>
+<!-- Scrollable Main Canvas -->
+<main class="flex-1 overflow-y-auto px-4 pt-3.5 pb-28 scroll-smooth">
+<!-- Alert Sound Chip Row -->
+<section class="mb-3.5">
+<div class="w-full bg-[#FAFAFA] border border-[#E5E5E5] rounded-[8px] px-3.5 py-2.5 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-[#525252]">notifications_active</span>
+<span class="text-xs font-medium text-[#171717]">Alert sound on</span>
+</div>
+<!-- Minimal toggle switch (black pill active state) -->
+<div aria-checked="true" class="w-8 h-4.5 bg-[#0F766E] rounded-full p-0.5 flex items-center justify-end cursor-pointer" role="switch">
+<div class="w-3.5 h-3.5 bg-white rounded-full"></div>
+</div>
+</div>
+</section>
+<!-- Active Alert Card -->
+<section class="bg-white border border-[#171717] rounded-[8px] p-5 shadow-none mb-6">
+<!-- Header status row -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<!-- Alert rust icon (#9C4F3A) -->
+<span class="material-symbols-outlined text-[16px] text-[#9C4F3A]">warning</span>
+<span class="text-[11px] font-mono tracking-wider font-medium text-[#737373] uppercase">OFFICIAL ALERT</span>
+</div>
+<span class="font-mono text-[11px] text-[#737373] uppercase tracking-tight">UPDATED 2m AGO</span>
+</div>
+<!-- Headline & Subtitle -->
+<h1 class="text-[20px] leading-tight font-semibold text-[#171717] mt-3 tracking-tight">Flood alert for your area</h1>
+<p class="font-mono text-xs text-[#525252] mt-1">NDMA · valid until 17:30</p>
+<!-- Instructions list with outline icons -->
+<div class="mt-4 divide-y divide-[#F0F0F0]">
+<div class="py-2.5 flex items-center gap-3">
+<span class="material-symbols-outlined text-[16px] text-[#525252]">layers</span>
+<span class="text-sm text-[#171717] font-normal">Move to higher floors</span>
+</div>
+<div class="py-2.5 flex items-center gap-3">
+<span class="material-symbols-outlined text-[16px] text-[#525252]">location_off</span>
+<span class="text-sm text-[#171717] font-normal">Avoid Sinhagad Road</span>
+</div>
+<div class="py-2.5 flex items-center gap-3">
+<span class="material-symbols-outlined text-[16px] text-[#525252]">battery_charging_full</span>
+<span class="text-sm text-[#171717] font-normal">Keep phone charged</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="mt-4 pt-1">
+<button class="w-full bg-[#0F766E] text-white py-2.5 rounded-lg text-sm font-medium hover:bg-[#115E59] transition-colors">
+            I'm safe
+          </button>
+<button class="w-full bg-white border border-[#E5E5E5] text-[#171717] py-2.5 rounded-lg text-sm font-medium hover:bg-[#FAFAFA] transition-colors mt-2">
+            Why this alert?
+          </button>
+</div>
+<!-- Bottom verification line -->
+<div class="mt-4 pt-3 border-t border-[#F0F0F0]">
+<p class="font-mono text-[11px] leading-relaxed text-[#737373]">
+            Verified by: NDMA alert + 142 mm rain recorded + local news
+          </p>
+</div>
+</section>
+<!-- Nearby Updates Section Header -->
+<section class="mt-6 mb-3 flex items-center justify-between">
+<h2 class="text-xs font-medium text-[#737373] uppercase tracking-wider">NEARBY UPDATES</h2>
+<span class="font-mono text-xs text-[#737373]">2 ACTIVE</span>
+</section>
+<!-- Nearby Updates Card Container -->
+<section class="bg-white border border-[#E5E5E5] rounded-[8px] divide-y divide-[#E5E5E5] overflow-hidden">
+<!-- Row 1: Sinhagad Road -->
+<div class="p-3.5 hover:bg-[#FAFAFA] transition-colors">
+<div class="flex items-center justify-between">
+<!-- Status pill (Verified: #5F7F68 dot) -->
+<div class="inline-flex items-center gap-1.5 rounded-full bg-white border border-[#E5E5E5] px-2 py-0.5 text-xs text-[#171717]">
+<span class="w-[6px] h-[6px] rounded-full bg-[#5F7F68] shrink-0"></span>
+<span>Verified</span>
+</div>
+<span class="font-mono text-xs text-[#737373]">2 km · 18 min</span>
+</div>
+<p class="font-medium text-sm text-[#171717] mt-2">Sinhagad Road under 3–4 ft water</p>
+</div>
+<!-- Row 2: Khadakwasla dam -->
+<div class="p-3.5 hover:bg-[#FAFAFA] transition-colors">
+<div class="flex items-center justify-between">
+<!-- Status pill (Conflicting: #A88442 dot) -->
+<div class="inline-flex items-center gap-1.5 rounded-full bg-white border border-[#E5E5E5] px-2 py-0.5 text-xs text-[#171717]">
+<span class="w-[6px] h-[6px] rounded-full bg-[#A88442] shrink-0"></span>
+<span>Conflicting</span>
+</div>
+<span class="font-mono text-xs text-[#737373]">9 km · 25 min</span>
+</div>
+<p class="font-medium text-sm text-[#171717] mt-2">Khadakwasla dam gates burst</p>
+</div>
+</section>
+</main>
+<!-- Contextual Action: Check a message -->
+<div class="absolute bottom-[72px] left-0 right-0 px-4 flex justify-center pointer-events-none z-40">
+<button class="pointer-events-auto shadow-none inline-flex items-center gap-2 bg-[#0F766E] text-white px-4 py-2 rounded-full text-xs font-medium hover:bg-[#115E59] transition-transform active:scale-95 border border-[#0F766E]">
+<span class="material-symbols-outlined text-[15px]">chat</span>
+<span>Check a message</span>
+</button>
+</div>
+<!-- Shared Component: BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full max-w-[390px] mx-auto z-50 flex justify-around items-center h-16 pb-safe bg-surface-container-lowest border-t border-outline-variant">
+<!-- Item 1: Home (Active based on active screen intent) -->
+<a class="flex flex-col items-center justify-center font-medium py-1 active:scale-95 transition-transform duration-100 text-[#0F766E]" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label text-xs tracking-normal mt-0.5">Home</span>
+</a>
+<!-- Item 2: Map (Inactive) -->
+<a class="flex flex-col items-center justify-center text-secondary py-1 active:scale-95 transition-transform duration-100 hover:text-primary transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">map</span>
+<span class="font-label text-xs tracking-normal mt-0.5">Map</span>
+</a>
+<!-- Item 3: Check (Inactive) -->
+<a class="flex flex-col items-center justify-center text-secondary py-1 active:scale-95 transition-transform duration-100 hover:text-primary transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">fact_check</span>
+<span class="font-label text-xs tracking-normal mt-0.5">Check</span>
+</a>
+<!-- Item 4: Settings (Inactive) -->
+<a class="flex flex-col items-center justify-center text-secondary py-1 active:scale-95 transition-transform duration-100 hover:text-primary transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+<span class="font-label text-xs tracking-normal mt-0.5">Settings</span>
+</a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-white" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SachVerify — Evaluation</title>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary-fixed": "#5f5e5e",
+            "on-secondary-container": "#1b1b1b",
+            "on-background": "#1b1c1c",
+            "on-tertiary-fixed": "#ffffff",
+            "on-secondary-fixed-variant": "#3b3b3b",
+            "tertiary-container": "#747474",
+            "surface-container": "#efeded",
+            "secondary": "#5e5e5e",
+            "tertiary-fixed": "#5e5e5e",
+            "primary-container": "#3c3b3b",
+            "primary": "#000000",
+            "on-primary-fixed": "#ffffff",
+            "secondary-fixed-dim": "#ababab",
+            "surface-container-lowest": "#ffffff",
+            "surface-bright": "#fbf9f9",
+            "inverse-primary": "#c8c6c5",
+            "outline": "#777777",
+            "tertiary": "#3b3b3b",
+            "surface-container-high": "#e9e8e7",
+            "secondary-fixed": "#c6c6c6",
+            "secondary-container": "#d4d4d4",
+            "surface-tint": "#5f5e5e",
+            "surface-container-low": "#f5f3f3",
+            "on-primary-container": "#ffffff",
+            "on-tertiary": "#e2e2e2",
+            "on-secondary": "#ffffff",
+            "inverse-on-surface": "#f2f0f0",
+            "error": "#ba1a1a",
+            "surface-variant": "#e3e2e2",
+            "outline-variant": "#c6c6c6",
+            "error-container": "#ffdad6",
+            "primary-fixed-dim": "#474746",
+            "on-error": "#ffffff",
+            "surface-dim": "#dbdad9",
+            "on-surface": "#1b1c1c",
+            "inverse-surface": "#303031",
+            "on-surface-variant": "#474747",
+            "on-secondary-fixed": "#1b1b1b",
+            "tertiary-fixed-dim": "#474747",
+            "on-tertiary-fixed-variant": "#e2e2e2",
+            "on-tertiary-container": "#ffffff",
+            "on-primary": "#e5e2e1",
+            "on-primary-fixed-variant": "#e5e2e1",
+            "surface": "#fbf9f9",
+            "on-error-container": "#410002",
+            "background": "#ffffff",
+            "surface-container-highest": "#e3e2e2"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            headline: ["Inter", "sans-serif"],
+            display: ["Inter", "sans-serif"],
+            body: ["Inter", "sans-serif"],
+            label: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Strictly minimal, near-monochrome system rules */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #171717;
+      background-color: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-feature-settings: "tnum" 1, "zero" 1;
+    }
+    .material-symbols-outlined {
+      font-size: 16px;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col justify-between selection:bg-[#E5E5E5] selection:text-[#171717]">
+<!-- Top Navigation Bar (Shared Component JSON alignment) -->
+<header class="border-b border-[#E5E5E5] bg-surface-container-lowest sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-6 max-w-screen-2xl mx-auto h-14">
+<!-- Brand & Primary Nav Cluster -->
+<div class="flex items-center gap-8 h-full">
+<span class="font-headline text-base font-semibold tracking-tight text-[#171717]">
+          SachVerify
+        </span>
+<nav class="hidden md:flex items-center gap-6 h-full text-sm font-medium tracking-tight">
+<a class="text-[#525252] hover:text-[#171717] transition-colors h-full flex items-center" href="#">
+            Console
+          </a>
+<!-- Active Tab: Evaluation (Exact mapping per protocol) -->
+<a class="font-medium border-b-2 border-[#0F766E] h-full flex items-center transition-colors text-[#0F766E]" href="#">
+            Evaluation
+          </a>
+<a class="text-[#525252] hover:text-[#171717] transition-colors h-full flex items-center" href="#">
+            Review
+          </a>
+</nav>
+</div>
+<!-- Trailing Action Elements -->
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center gap-2 border border-[#E5E5E5] rounded-full px-2.5 py-0.5 bg-white">
+<span class="w-1.5 h-1.5 rounded-full inline-block bg-[#5F7F68]"></span>
+<span class="font-mono text-[11px] text-[#525252]">v1.4.2 · 7b92f0c</span>
+</div>
+<div class="flex items-center gap-2 text-[#525252]">
+<button class="w-8 h-8 rounded flex items-center justify-center hover:text-[#171717] hover:bg-[#FAFAFA] transition-colors" title="Settings">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center hover:text-[#171717] hover:bg-[#FAFAFA] transition-colors" title="Account">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas Container -->
+<main class="w-full max-w-screen-2xl mx-auto px-6 py-8 flex-1 flex flex-col gap-8">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E5E5E5] pb-6">
+<div>
+<h1 class="text-2xl font-semibold text-[#171717] tracking-tight">
+          Evaluation
+        </h1>
+<p class="font-mono text-xs text-[#A3A3A3] mt-1 tracking-tight">
+          run 2026-10-23 14:02 · test split · n = 30
+        </p>
+</div>
+<div class="flex items-center gap-2.5">
+<button class="h-8 px-3 rounded-lg border border-[#E5E5E5] bg-white text-xs font-medium text-[#171717] hover:bg-[#FAFAFA] transition-colors inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+          Export JSON
+        </button>
+<button class="h-8 px-3 rounded-lg bg-[#0F766E] text-white text-xs font-medium hover:bg-[#115E59] transition-colors inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-white" data-icon="refresh">refresh</span>
+          Re-run split
+        </button>
+</div>
+</div>
+<!-- Top Metric Cards (Row of 4) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Card 1 -->
+<div class="bg-white border border-[#E5E5E5] rounded-lg p-5 flex flex-col justify-between">
+<div class="text-[11px] font-medium tracking-wider text-[#A3A3A3] uppercase">
+          MACRO-F1
+        </div>
+<div class="font-mono text-3xl font-medium text-[#171717] tracking-tight my-2">
+          0.91
+        </div>
+<div class="font-mono text-[11px] text-[#A3A3A3]">
+          test split · n = 30
+        </div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white border border-[#E5E5E5] rounded-lg p-5 flex flex-col justify-between">
+<div class="text-[11px] font-medium tracking-wider text-[#A3A3A3] uppercase">
+          ACCURACY
+        </div>
+<div class="font-mono text-3xl font-medium text-[#171717] tracking-tight my-2">
+          0.93
+        </div>
+<div class="font-mono text-[11px] text-[#A3A3A3]">
+          test split · n = 30
+        </div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white border border-[#E5E5E5] rounded-lg p-5 flex flex-col justify-between">
+<div class="text-[11px] font-medium tracking-wider text-[#A3A3A3] uppercase">
+          CRITICAL ERRORS
+        </div>
+<div class="font-mono text-3xl font-medium text-[#171717] tracking-tight my-2">
+          0
+        </div>
+<div class="font-mono text-[11px] text-[#A3A3A3]">
+          target 0 · 0.0%
+        </div>
+</div>
+<!-- Card 4 -->
+<div class="bg-white border border-[#E5E5E5] rounded-lg p-5 flex flex-col justify-between">
+<div class="text-[11px] font-medium tracking-wider text-[#A3A3A3] uppercase">
+          MEDIAN LATENCY
+        </div>
+<div class="font-mono text-3xl font-medium text-[#171717] tracking-tight my-2">
+          1.2 s
+        </div>
+<div class="font-mono text-[11px] text-[#A3A3A3]">
+          p95 2.4 s · n = 30
+        </div>
+</div>
+</div>
+<!-- Main Two-Column Section (Confusion Matrix & Breakdown) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Left: Confusion Matrix (Cols 6) -->
+<div class="lg:col-span-6 bg-white border border-[#E5E5E5] rounded-lg p-6 flex flex-col justify-between">
+<div>
+<div class="flex items-baseline justify-between border-b border-[#E5E5E5] pb-4 mb-6">
+<div>
+<h2 class="text-base font-semibold text-[#171717] tracking-tight">Confusion matrix</h2>
+<p class="font-mono text-xs text-[#A3A3A3] mt-0.5">True status (rows) vs Predicted status (columns) · N = 30</p>
+</div>
+<span class="text-[11px] font-mono text-[#525252] border border-[#E5E5E5] px-2 py-0.5 rounded-full">Norm: Count</span>
+</div>
+<!-- 4x4 Matrix Table -->
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr>
+<th class="p-2 text-left text-[11px] font-mono text-[#A3A3A3] w-24">True \ Pred</th>
+<!-- Col Headers with status dots -->
+<th class="p-2 text-center text-xs font-medium text-[#525252]">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+<span>Verified</span>
+</div>
+</th>
+<th class="p-2 text-center text-xs font-medium text-[#525252]">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>
+<span>Conflicting</span>
+</div>
+</th>
+<th class="p-2 text-center text-xs font-medium text-[#525252]">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A3A3A3]"></span>
+<span>Outdated</span>
+</div>
+</th>
+<th class="p-2 text-center text-xs font-medium text-[#525252]">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#6B7A99]"></span>
+<span>Unverified</span>
+</div>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#E5E5E5]">
+<!-- Row 1: True Verified -->
+<tr>
+<td class="p-2 text-xs font-medium text-[#525252] whitespace-nowrap">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+<span>Verified</span>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#171717] text-white p-3 rounded text-center">
+<div class="font-mono text-sm font-medium">10</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">90.9%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">0</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">0.0%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">1</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">9.1%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">0</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">0.0%</div>
+</div>
+</td>
+</tr>
+<!-- Row 2: True Conflicting -->
+<tr>
+<td class="p-2 text-xs font-medium text-[#525252] whitespace-nowrap">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>
+<span>Conflicting</span>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">0</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">0.0%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#171717] text-white p-3 rounded text-center">
+<div class="font-mono text-sm font-medium">6</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">100%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">0</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">0.0%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">0</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">0.0%</div>
+</div>
+</td>
+</tr>
+<!-- Row 3: True Outdated -->
+<tr>
+<td class="p-2 text-xs font-medium text-[#525252] whitespace-nowrap">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A3A3A3]"></span>
+<span>Outdated</span>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">0</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">0.0%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">0</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">0.0%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#171717] text-white p-3 rounded text-center">
+<div class="font-mono text-sm font-medium">5</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">83.3%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">1</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">16.7%</div>
+</div>
+</td>
+</tr>
+<!-- Row 4: True Unverified -->
+<tr>
+<td class="p-2 text-xs font-medium text-[#525252] whitespace-nowrap">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#6B7A99]"></span>
+<span>Unverified</span>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">0</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">0.0%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">0</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">0.0%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded text-center text-[#525252]">
+<div class="font-mono text-sm font-medium">0</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">0.0%</div>
+</div>
+</td>
+<td class="p-2">
+<div class="bg-[#171717] text-white p-3 rounded text-center">
+<div class="font-mono text-sm font-medium">7</div>
+<div class="text-[10px] text-[#A3A3A3] font-mono">100%</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="mt-6 pt-3 border-t border-[#E5E5E5] flex justify-between items-center text-[11px] text-[#A3A3A3] font-mono">
+<span>Diagonal = accurate predictions (28 / 30)</span>
+<span>Zero critical cross-talk</span>
+</div>
+</div>
+<!-- Right: Per-status performance & Failure categories (Cols 6) -->
+<div class="lg:col-span-6 bg-white border border-[#E5E5E5] rounded-lg p-6 flex flex-col justify-between">
+<!-- Top Half: Per-status performance table -->
+<div>
+<div class="border-b border-[#E5E5E5] pb-3 mb-4">
+<h2 class="text-base font-semibold text-[#171717] tracking-tight">Per-status performance</h2>
+<p class="font-mono text-xs text-[#A3A3A3] mt-0.5">Evaluation metrics stratified by ground truth class</p>
+</div>
+<div class="w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-[#E5E5E5]">
+<th class="py-2 text-[11px] font-mono text-[#A3A3A3] uppercase tracking-wider">Status</th>
+<th class="py-2 text-right text-[11px] font-mono text-[#A3A3A3] uppercase tracking-wider">Precision</th>
+<th class="py-2 text-right text-[11px] font-mono text-[#A3A3A3] uppercase tracking-wider">Recall</th>
+<th class="py-2 text-right text-[11px] font-mono text-[#A3A3A3] uppercase tracking-wider">F1</th>
+<th class="py-2 text-right text-[11px] font-mono text-[#A3A3A3] uppercase tracking-wider">Support</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#E5E5E5] text-xs">
+<tr>
+<td class="py-2.5 font-medium text-[#525252]">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+<span>Verified</span>
+</div>
+</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">1.00</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">0.91</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">0.95</td>
+<td class="py-2.5 text-right font-mono text-[#525252]">11</td>
+</tr>
+<tr>
+<td class="py-2.5 font-medium text-[#525252]">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>
+<span>Conflicting</span>
+</div>
+</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">1.00</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">1.00</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">1.00</td>
+<td class="py-2.5 text-right font-mono text-[#525252]">6</td>
+</tr>
+<tr>
+<td class="py-2.5 font-medium text-[#525252]">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A3A3A3]"></span>
+<span>Outdated</span>
+</div>
+</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">0.83</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">0.83</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">0.83</td>
+<td class="py-2.5 text-right font-mono text-[#525252]">6</td>
+</tr>
+<tr>
+<td class="py-2.5 font-medium text-[#525252]">
+<div class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#6B7A99]"></span>
+<span>Unverified</span>
+</div>
+</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">0.88</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">1.00</td>
+<td class="py-2.5 text-right font-mono text-[#171717]">0.93</td>
+<td class="py-2.5 text-right font-mono text-[#525252]">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Bottom Half: Failure categories -->
+<div class="mt-8 pt-6 border-t border-[#E5E5E5]">
+<div class="flex items-center justify-between mb-4">
+<div>
+<h3 class="text-sm font-semibold text-[#171717] tracking-tight">Failure categories</h3>
+<p class="font-mono text-xs text-[#A3A3A3]">Total error instances: 2 across n=30</p>
+</div>
+<span class="text-[11px] font-mono text-[#A3A3A3]">Relative distribution</span>
+</div>
+<div class="space-y-2.5">
+<!-- Category: Retrieval -->
+<div class="flex items-center gap-4 text-xs">
+<span class="w-28 text-[#525252] truncate">Retrieval</span>
+<div class="flex-1 h-3 bg-[#F5F5F5] rounded overflow-hidden">
+<div class="h-full bg-[#171717] rounded" style="width: 40%"></div>
+</div>
+<span class="w-8 font-mono text-right text-[#171717]">2</span>
+</div>
+<!-- Category: Grounding -->
+<div class="flex items-center gap-4 text-xs">
+<span class="w-28 text-[#525252] truncate">Grounding</span>
+<div class="flex-1 h-3 bg-[#F5F5F5] rounded overflow-hidden">
+<div class="h-full bg-[#171717] rounded" style="width: 20%"></div>
+</div>
+<span class="w-8 font-mono text-right text-[#171717]">1</span>
+</div>
+<!-- Category: Event binding -->
+<div class="flex items-center gap-4 text-xs">
+<span class="w-28 text-[#525252] truncate">Event binding</span>
+<div class="flex-1 h-3 bg-[#F5F5F5] rounded overflow-hidden">
+<div class="h-full bg-[#171717] rounded" style="width: 20%"></div>
+</div>
+<span class="w-8 font-mono text-right text-[#171717]">1</span>
+</div>
+<!-- Category: Temporal -->
+<div class="flex items-center gap-4 text-xs">
+<span class="w-28 text-[#525252] truncate">Temporal</span>
+<div class="flex-1 h-3 bg-[#F5F5F5] rounded overflow-hidden">
+<div class="h-full bg-[#171717] rounded" style="width: 0%"></div>
+</div>
+<span class="w-8 font-mono text-right text-[#A3A3A3]">0</span>
+</div>
+<!-- Category: Geographic -->
+<div class="flex items-center gap-4 text-xs">
+<span class="w-28 text-[#525252] truncate">Geographic</span>
+<div class="flex-1 h-3 bg-[#F5F5F5] rounded overflow-hidden">
+<div class="h-full bg-[#171717] rounded" style="width: 0%"></div>
+</div>
+<span class="w-8 font-mono text-right text-[#A3A3A3]">0</span>
+</div>
+<!-- Category: Contradiction -->
+<div class="flex items-center gap-4 text-xs">
+<span class="w-28 text-[#525252] truncate">Contradiction</span>
+<div class="flex-1 h-3 bg-[#F5F5F5] rounded overflow-hidden">
+<div class="h-full bg-[#171717] rounded" style="width: 20%"></div>
+</div>
+<span class="w-8 font-mono text-right text-[#171717]">1</span>
+</div>
+<!-- Category: Uncertainty -->
+<div class="flex items-center gap-4 text-xs">
+<span class="w-28 text-[#525252] truncate">Uncertainty</span>
+<div class="flex-1 h-3 bg-[#F5F5F5] rounded overflow-hidden">
+<div class="h-full bg-[#171717] rounded" style="width: 0%"></div>
+</div>
+<span class="w-8 font-mono text-right text-[#A3A3A3]">0</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Critical errors & Ablations (Cols 12: 5 and 7) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Bottom Left: Critical errors -->
+<div class="lg:col-span-5 bg-white border border-[#E5E5E5] rounded-lg p-6 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between border-b border-[#E5E5E5] pb-3 mb-4">
+<div>
+<h2 class="text-base font-semibold text-[#171717] tracking-tight">Critical errors</h2>
+<p class="font-mono text-xs text-[#A3A3A3]">High-severity misclassifications that violate guardrails</p>
+</div>
+<div class="inline-flex items-center gap-1.5 border border-[#E5E5E5] rounded-full px-2.5 py-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+<span class="font-mono text-xs text-[#171717]">0 detected</span>
+</div>
+</div>
+<div class="divide-y divide-[#E5E5E5]">
+<!-- Row 1 -->
+<div class="py-3.5 flex items-center justify-between">
+<div>
+<div class="text-xs font-medium text-[#171717] flex items-center gap-2">
+<span>Unverified → Conflicting</span>
+<span class="font-mono text-[10px] text-[#A3A3A3] border border-[#E5E5E5] px-1.5 rounded">guardrail: 0</span>
+</div>
+<div class="text-[11px] text-[#A3A3A3] mt-0.5">False accusation severity: Level 1</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-mono text-xs font-medium text-[#171717]">0</span>
+<a class="text-xs underline-offset-2 hover:underline text-[#0F766E]" href="#">view cases →</a>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="py-3.5 flex items-center justify-between">
+<div>
+<div class="text-xs font-medium text-[#171717] flex items-center gap-2">
+<span>Outdated → Conflicting</span>
+<span class="font-mono text-[10px] text-[#A3A3A3] border border-[#E5E5E5] px-1.5 rounded">guardrail: 0</span>
+</div>
+<div class="text-[11px] text-[#A3A3A3] mt-0.5">Temporal staleness misdiagnosed as malicious</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-mono text-xs font-medium text-[#171717]">0</span>
+<a class="text-xs underline-offset-2 hover:underline text-[#0F766E]" href="#">view cases →</a>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="py-3.5 flex items-center justify-between">
+<div>
+<div class="text-xs font-medium text-[#171717] flex items-center gap-2">
+<span>Historical verified → Conflicting</span>
+<span class="font-mono text-[10px] text-[#A3A3A3] border border-[#E5E5E5] px-1.5 rounded">guardrail: 0</span>
+</div>
+<div class="text-[11px] text-[#A3A3A3] mt-0.5">Established ground truth reversal error</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-mono text-xs font-medium text-[#171717]">0</span>
+<a class="text-xs underline-offset-2 hover:underline text-[#0F766E]" href="#">view cases →</a>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-[#E5E5E5] flex items-center gap-2 text-[11px] font-mono text-[#A3A3A3]">
+<span class="material-symbols-outlined text-xs" data-icon="verified_user">verified_user</span>
+<span>Zero critical inversions detected across 30 verification steps.</span>
+</div>
+</div>
+<!-- Bottom Right: Ablations table -->
+<div class="lg:col-span-7 bg-white border border-[#E5E5E5] rounded-lg p-6 flex flex-col justify-between">
+<div>
+<div class="flex items-baseline justify-between border-b border-[#E5E5E5] pb-3 mb-4">
+<div>
+<h2 class="text-base font-semibold text-[#171717] tracking-tight">Ablations</h2>
+<p class="font-mono text-xs text-[#A3A3A3]">Component isolation analysis on test split</p>
+</div>
+<span class="font-mono text-[11px] text-[#525252]">Delta to baseline</span>
+</div>
+<div class="w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-[#E5E5E5]">
+<th class="py-2 text-[11px] font-mono text-[#A3A3A3] uppercase tracking-wider">Configuration</th>
+<th class="py-2 text-right text-[11px] font-mono text-[#A3A3A3] uppercase tracking-wider">Macro-F1</th>
+<th class="py-2 text-right text-[11px] font-mono text-[#A3A3A3] uppercase tracking-wider">Accuracy</th>
+<th class="py-2 text-right text-[11px] font-mono text-[#A3A3A3] uppercase tracking-wider">Critical errors</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#E5E5E5] text-xs">
+<!-- Baseline -->
+<tr class="bg-[#FAFAFA]">
+<td class="py-2.5 font-medium text-[#171717] pl-2 rounded-l">
+                    Full system (baseline)
+                  </td>
+<td class="py-2.5 text-right font-mono font-medium text-[#171717]">0.91</td>
+<td class="py-2.5 text-right font-mono font-medium text-[#171717]">0.93</td>
+<td class="py-2.5 text-right font-mono font-medium text-[#171717] pr-2 rounded-r">0</td>
+</tr>
+<tr>
+<td class="py-2.5 text-[#525252] pl-2">
+                    − freshness
+                  </td>
+<td class="py-2.5 text-right font-mono text-[#525252]">0.84</td>
+<td class="py-2.5 text-right font-mono text-[#525252]">0.86</td>
+<td class="py-2.5 text-right font-mono text-[#171717] pr-2">1</td>
+</tr>
+<tr>
+<td class="py-2.5 text-[#525252] pl-2">
+                    − geo
+                  </td>
+<td class="py-2.5 text-right font-mono text-[#525252]">0.87</td>
+<td class="py-2.5 text-right font-mono text-[#525252]">0.89</td>
+<td class="py-2.5 text-right font-mono text-[#525252] pr-2">0</td>
+</tr>
+<tr>
+<td class="py-2.5 text-[#525252] pl-2">
+                    − local news
+                  </td>
+<td class="py-2.5 text-right font-mono text-[#525252]">0.79</td>
+<td class="py-2.5 text-right font-mono text-[#525252]">0.81</td>
+<td class="py-2.5 text-right font-mono text-[#171717] pr-2">2</td>
+</tr>
+<tr>
+<td class="py-2.5 text-[#525252] pl-2">
+                    − NLI
+                  </td>
+<td class="py-2.5 text-right font-mono text-[#525252]">0.72</td>
+<td class="py-2.5 text-right font-mono text-[#525252]">0.74</td>
+<td class="py-2.5 text-right font-mono text-[#171717] pr-2">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="pt-4 border-t border-[#E5E5E5] flex justify-between items-center text-[11px] font-mono text-[#A3A3A3]">
+<span>NLI ablation demonstrates the highest performance drop (−0.19 F1)</span>
+<span>p &lt; 0.001</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component JSON alignment) -->
+<footer class="border-t border-[#E5E5E5] bg-surface-container-lowest py-4 mt-12">
+<div class="flex flex-col sm:flex-row justify-between items-center w-full px-6 max-w-screen-2xl mx-auto gap-2 font-mono text-xs text-[#525252]">
+<div>
+        All numbers produced by run_eval.py — not hand-entered.
+      </div>
+<div class="flex items-center gap-4 text-[#A3A3A3]">
+<span>v1.4.2</span>
+<span>sha:7b92f0c</span>
+<span>Status: Normal</span>
+<span class="hidden md:inline">environment: deterministic</span>
+<span class="hidden md:inline">seed: 42</span>
+</div>
+</div>
+</footer>
+</body></html>

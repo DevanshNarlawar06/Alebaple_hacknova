@@ -1,0 +1,181 @@
+{
+  "california, usa": {
+    "lat": 36.7014631,
+    "lon": -118.755997,
+    "address": "California, United States",
+    "queried_at": "2026-10-23T09:26:50Z"
+  },
+  "texas/louisiana, usa": {
+    "lat": 32.5287562,
+    "lon": -93.7156833,
+    "address": "USA Nails, 2565, East Texas Street, Glendale, Bossier City, Bossier Parish, Louisiana, 71111, United States",
+    "queried_at": "2026-10-23T09:26:52Z"
+  },
+  "puerto rico, usa": {
+    "lat": 18.2247706,
+    "lon": -66.4858295,
+    "address": "Puerto Rico, United States",
+    "queried_at": "2026-10-23T09:26:54Z"
+  },
+  "caribbean/florida, usa": {
+    "lat": 27.3078592,
+    "lon": -80.2952923,
+    "address": "Caribbean, Port Saint Lucie, Saint Lucie County, Florida, 34952, United States",
+    "queried_at": "2026-10-23T09:26:55Z"
+  },
+  "sri lanka": {
+    "lat": 7.5554942,
+    "lon": 80.7137847,
+    "address": "Sri Lanka",
+    "queried_at": "2026-10-23T09:26:57Z"
+  },
+  "mexico city, mexico": {
+    "lat": 19.3207722,
+    "lon": -99.1514677,
+    "address": "Ciudad de México, México",
+    "queried_at": "2026-10-23T09:26:59Z"
+  },
+  "iran/iraq border region": {
+    "lat": 34.911,
+    "lon": 45.959,
+    "address": "Kermanshah Province, Iran / Halabja, Iraq border region",
+    "queried_at": "2026-10-23T09:27:01Z"
+  },
+  "v2|kothrud, pune|": {
+    "lat": 18.5072618,
+    "lon": 73.8056676,
+    "precision": "approximate",
+    "display": "Kothrud, Karve Nagar, Pune, Pune City Subdistrict, Pune, Maharashtra, 411051, India",
+    "confidence": 0.85,
+    "ambiguous": false,
+    "queried_at": "2026-10-23T11:01:45Z"
+  },
+  "v2|sinhagad road|": {
+    "lat": 18.4915372,
+    "lon": 73.8335232,
+    "precision": "approximate",
+    "display": "Sinhagad Road, Karve Nagar, Anandnagar, Pune City Subdistrict, Pune, Maharashtra, 411051, India",
+    "confidence": 0.85,
+    "ambiguous": false,
+    "queried_at": "2026-10-23T11:01:46Z"
+  },
+  "v2|acapulco|": {
+    "lat": 16.8680495,
+    "lon": -99.8940182,
+    "precision": "city",
+    "display": "Acapulco, Acapulco de Juárez, Guerrero, 39300, México",
+    "confidence": 0.85,
+    "ambiguous": false,
+    "queried_at": "2026-10-23T11:01:47Z"
+  },
+  "v2|mexico city, mexico|": {
+    "lat": 19.3207722,
+    "lon": -99.1514677,
+    "precision": "region",
+    "display": "Ciudad de México, México",
+    "confidence": 0.85,
+    "ambiguous": false,
+    "queried_at": "2026-10-23T11:21:02Z"
+  },
+  "v2|acapulco, guerrero, mexico|": {
+    "lat": 16.8680495,
+    "lon": -99.8940182,
+    "precision": "city",
+    "display": "Acapulco, Acapulco de Juárez, Guerrero, 39300, México",
+    "confidence": 0.85,
+    "ambiguous": false,
+    "queried_at": "2026-10-23T11:23:16Z"
+  },
+  "v2|houston, texas, usa|": {
+    "lat": 29.7589382,
+    "lon": -95.3676974,
+    "precision": "city",
+    "display": "Houston, Harris County, Texas, United States",
+    "confidence": 0.5,
+    "ambiguous": true,
+    "queried_at": "2026-10-23T11:24:20Z"
+  },
+  "v2|iran and iraq|": {
+    "unresolved": true,
+    "reason": "no place-level match for 'Iran and Iraq'"
+  },
+  "v2|guajataca dam, isabela, puerto rico|": {
+    "lat": 18.3972582,
+    "lon": -66.924808,
+    "precision": "approximate",
+    "display": "Represa Guajataca, Planas, Isabela, Puerto Rico, United States",
+    "confidence": 0.85,
+    "ambiguous": false,
+    "queried_at": "2026-10-23T11:39:24Z"
+  },
+  "v2|houston, texas, united states|": {
+    "lat": 29.7589382,
+    "lon": -95.3676974,
+    "precision": "city",
+    "display": "Houston, Harris County, Texas, United States",
+    "confidence": 0.5,
+    "ambiguous": true,
+    "queried_at": "2026-10-23T11:51:45Z"
+  },
+  "v2|andhra pradesh, india|": {
+    "lat": 15.9240905,
+    "lon": 80.1863809,
+    "precision": "region",
+    "display": "Andhra Pradesh, India",
+    "confidence": 0.85,
+    "ambiguous": false,
+    "queried_at": "2026-10-23T11:55:04Z"
+  },
+  "v2|maharashtra, india|": {
+    "lat": 19.5670323,
+    "lon": 76.4164557,
+    "precision": "region",
+    "display": "Maharashtra, India",
+    "confidence": 0.85,
+    "ambiguous": false,
+    "queried_at": "2026-10-23T11:55:08Z"
+  },
+  "v2|uttar pradesh, india|": {
+    "lat": 27.1303344,
+    "lon": 80.859666,
+    "precision": "region",
+    "display": "Uttar Pradesh, India",
+    "confidence": 0.85,
+    "ambiguous": false,
+    "queried_at": "2026-10-23T11:55:16Z"
+  },
+  "v2|haryana, india|": {
+    "lat": 29.0,
+    "lon": 76.0,
+    "precision": "region",
+    "display": "Haryana, India",
+    "confidence": 0.85,
+    "ambiguous": false,
+    "queried_at": "2026-10-23T11:55:27Z"
+  },
+  "v2|imd goa, india|": {
+    "unresolved": true,
+    "reason": "no place-level match for 'IMD Goa, India'"
+  },
+  "v2|imd chennai, india|": {
+    "unresolved": true,
+    "reason": "no place-level match for 'IMD Chennai, India'"
+  },
+  "v2|rajasthan, india|": {
+    "lat": 26.8105777,
+    "lon": 73.7684549,
+    "precision": "region",
+    "display": "Rajasthan, India",
+    "confidence": 0.85,
+    "ambiguous": false,
+    "queried_at": "2026-10-23T11:56:14Z"
+  },
+  "v2|imd jaipur, india|": {
+    "unresolved": true,
+    "reason": "no place-level match for 'IMD Jaipur, India'"
+  },
+  "v2|imd mumbai, india|": {
+    "unresolved": true,
+    "reason": "no place-level match for 'IMD Mumbai, India'"
+  }
+}

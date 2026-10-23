@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SachVerify — Check a Post (D3)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            page: '#FFFFFF',
+            subtle: '#FAFAFA',
+            border: '#E5E5E5',
+            ink: '#171717',
+            secondary: '#525252',
+            muted: '#A3A3A3',
+            // Strict 6px dot status colors
+            statusVerified: '#5F7F68',
+            statusConflicting: '#A88442',
+            statusOutdated: '#A3A3A3',
+            statusUnverified: '#6B7A99',
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #171717;
+      background-color: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+    }
+    input, select, textarea {
+      outline: none;
+    }
+    /* Minimal custom scrollbar if needed */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAFAFA;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #E5E5E5;
+      border-radius: 4px;
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-custom {
+      animation: spin-slow 1s linear infinite;
+    }
+  </style>
+</link></head>
+<body class="w-[1440px] h-[900px] overflow-hidden bg-white text-ink relative select-none">
+<!-- ======================================================== -->
+<!-- BACKGROUND CONSOLE (D1 replica)                          -->
+<!-- ======================================================== -->
+<div class="w-full h-full flex flex-col bg-white">
+<!-- Top Bar -->
+<header class="h-12 border-b border-[#E5E5E5] px-4 flex items-center justify-between bg-white text-xs">
+<div class="flex items-center gap-3">
+<span class="font-semibold text-sm tracking-tight text-ink">SachVerify</span>
+<span class="font-mono text-[11px] text-muted px-1.5 py-0.5 border border-[#E5E5E5] rounded">DISPATCH v2.4</span>
+</div>
+<div class="w-[420px] relative">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[16px] text-muted">search</span>
+<input class="w-full h-8 pl-8 pr-8 border border-[#E5E5E5] rounded text-xs bg-[#FAFAFA] text-secondary cursor-default" placeholder="Search place, hazard or claim" readonly="" type="text" value="Search place, hazard or claim"/>
+<span class="font-mono text-[10px] text-muted absolute right-2.5 top-1/2 -translate-y-1/2 border border-[#E5E5E5] px-1 rounded bg-white">⌘K</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center border border-[#E5E5E5] rounded overflow-hidden">
+<button class="px-3 py-1 bg-[#0F766E] text-white font-medium text-xs">Live</button>
+<button class="px-3 py-1 bg-white text-secondary text-xs border-l border-[#E5E5E5]">Replay</button>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+<span>Live feeds OK</span>
+</div>
+<div class="h-4 w-px bg-[#E5E5E5]"></div>
+<button class="text-secondary p-1 hover:text-ink"><span class="material-symbols-outlined text-[18px]">tune</span></button>
+<button class="text-secondary p-1 hover:text-ink"><span class="material-symbols-outlined text-[18px]">notifications</span></button>
+<button class="h-8 px-3 bg-[#0F766E] text-white rounded text-xs font-medium flex items-center gap-1.5">
+<span>Check a post</span>
+</button>
+<div class="w-7 h-7 rounded-full bg-[#FAFAFA] border border-[#E5E5E5] flex items-center justify-center font-mono text-[11px] text-secondary">
+          RK
+        </div>
+</div>
+</header>
+<!-- Main Workspace 3 Columns -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Left Column: Stories -->
+<aside class="w-[310px] border-r border-[#E5E5E5] flex flex-col bg-white">
+<div class="p-3 border-b border-[#E5E5E5]">
+<div class="flex items-center justify-between text-xs mb-2">
+<span class="font-semibold text-ink">Stories <span class="text-muted font-normal font-mono">(6 active)</span></span>
+<span class="font-mono text-[11px] text-muted uppercase tracking-wider">AUTOSYNC 4s</span>
+</div>
+<div class="flex items-center gap-1.5 text-xs mb-2 overflow-x-hidden">
+<span class="px-2 py-0.5 rounded border border-ink text-ink font-medium text-[11px]">All</span>
+<span class="px-2 py-0.5 rounded border border-[#E5E5E5] text-secondary text-[11px] flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>Verified</span>
+<span class="px-2 py-0.5 rounded border border-[#E5E5E5] text-secondary text-[11px] flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>Conflicting</span>
+<span class="px-2 py-0.5 rounded border border-[#E5E5E5] text-secondary text-[11px] flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-[#A3A3A3]"></span>Outdated</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-secondary pt-1">
+<div class="flex items-center gap-2">
+<span class="border border-[#E5E5E5] px-1.5 py-0.5 rounded flex items-center gap-1">All hazards <span class="material-symbols-outlined text-[12px]">expand_more</span></span>
+<span class="border border-[#E5E5E5] px-1.5 py-0.5 rounded flex items-center gap-1">Last 24 h <span class="material-symbols-outlined text-[12px]">expand_more</span></span>
+</div>
+<span class="text-muted font-mono">Filtered (15)</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto divide-y divide-[#E5E5E5] text-xs">
+<!-- Story 1 -->
+<div class="p-3 bg-white">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">location_on</span> Pune · 18 min ago
+              </span>
+<span class="h-[22px] px-2 rounded-full border border-[#E5E5E5] bg-white text-ink text-[12px] flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>Verified
+              </span>
+</div>
+<p class="font-medium text-ink text-xs line-clamp-1 mb-2">Sinhagad Road under 3–4 ft water</p>
+<div class="flex items-center justify-between text-muted text-[11px]">
+<span class="font-mono">23 posts · hi · mr · en</span>
+<div class="flex items-center gap-1 font-mono text-[10px]"><span>HIGH</span><span class="w-8 h-1 bg-ink rounded"></span></div>
+</div>
+</div>
+<!-- Story 2 Selected -->
+<div class="p-3 bg-[#FAFAFA] border-l-2 border-l-ink">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">warning</span> Pune · 25 min ago
+              </span>
+<span class="h-[22px] px-2 rounded-full border border-[#E5E5E5] bg-white text-ink text-[12px] flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>Conflicting
+              </span>
+</div>
+<p class="font-medium text-ink text-xs line-clamp-1 mb-2">Khadakwasla dam gates burst, evacuate now</p>
+<div class="flex items-center justify-between text-muted text-[11px]">
+<span class="font-mono">67 posts · mr · hi · en</span>
+<div class="flex items-center gap-1 font-mono text-[10px]"><span>HIGH</span><span class="w-8 h-1 bg-ink rounded"></span></div>
+</div>
+</div>
+<!-- Story 3 -->
+<div class="p-3 bg-white">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">videocam</span> Kolhapur · 40 min ago
+              </span>
+<span class="h-[22px] px-2 rounded-full border border-[#E5E5E5] bg-white text-ink text-[12px] flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A3A3A3]"></span>Outdated
+              </span>
+</div>
+<p class="font-medium text-ink text-xs line-clamp-1 mb-2">Old video: Kolhapur bridge washed away</p>
+<div class="flex items-center justify-between text-muted text-[11px]">
+<span class="font-mono">14 posts · mr</span>
+<div class="flex items-center gap-1 font-mono text-[10px]"><span>HIGH</span><span class="w-8 h-1 bg-ink rounded"></span></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Center: Map View -->
+<main class="flex-1 bg-[#FAFAFA] relative border-r border-[#E5E5E5] flex flex-col justify-between p-4">
+<!-- Map controls -->
+<div class="flex justify-between items-start">
+<div class="flex items-center border border-[#E5E5E5] rounded bg-white text-xs overflow-hidden">
+<span class="px-2.5 py-1 text-ink font-medium bg-[#FAFAFA] flex items-center gap-1 border-r border-[#E5E5E5]">
+<span class="material-symbols-outlined text-[14px]">check</span>Official alerts
+            </span>
+<span class="px-2.5 py-1 text-secondary border-r border-[#E5E5E5]">Claims</span>
+<span class="px-2.5 py-1 text-secondary border-r border-[#E5E5E5]">Sensors</span>
+<span class="px-2.5 py-1 text-secondary">News</span>
+</div>
+<div class="flex flex-col border border-[#E5E5E5] rounded bg-white overflow-hidden text-xs">
+<button class="w-6 h-6 flex items-center justify-center text-secondary border-b border-[#E5E5E5] hover:text-ink">+</button>
+<button class="w-6 h-6 flex items-center justify-center text-secondary hover:text-ink">−</button>
+</div>
+</div>
+<!-- Center map graphic simulation -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
+<svg fill="none" height="360" viewbox="0 0 480 360" width="480">
+<circle cx="200" cy="240" fill="#E5E5E5" fill-opacity="0.5" r="60"></circle>
+<polygon fill="none" points="170,140 310,130 330,220 230,260" stroke="#171717" stroke-dasharray="3 3" stroke-width="1"></polygon>
+<line stroke="#E5E5E5" stroke-width="1" x1="200" x2="250" y1="240" y2="135"></line>
+<circle cx="200" cy="240" fill="#A88442" r="4" stroke="#FFFFFF" stroke-width="2"></circle>
+<circle cx="250" cy="180" fill="#5F7F68" r="3"></circle>
+<circle cx="300" cy="120" fill="#5F7F68" r="3"></circle>
+</svg>
+</div>
+<!-- Coordinates footer -->
+<div class="flex items-center justify-between text-[11px] text-muted font-mono z-0">
+<div class="p-2 border border-[#E5E5E5] rounded bg-white/80 flex flex-col gap-1 text-[11px]">
+<div class="text-[10px] text-muted uppercase font-sans tracking-wider">Map Legend</div>
+<div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span><span class="font-sans text-secondary">Verified</span></div>
+<div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span><span class="font-sans text-secondary">Conflicting</span></div>
+<div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#A3A3A3]"></span><span class="font-sans text-secondary">Outdated</span></div>
+</div>
+<span class="px-2 py-1 bg-white border border-[#E5E5E5] rounded">18.4285° N, 73.7634° E · 200m</span>
+</div>
+</main>
+<!-- Right Column: Verification Detail -->
+<aside class="w-[390px] bg-white flex flex-col overflow-y-auto">
+<div class="p-4 border-b border-[#E5E5E5]">
+<div class="flex items-center justify-between mb-2">
+<span class="font-mono text-xs text-muted">INC-2024-0824</span>
+<div class="flex border border-[#E5E5E5] rounded overflow-hidden text-[11px]">
+<span class="px-2 py-0.5 bg-ink text-white">Current</span>
+<span class="px-2 py-0.5 text-secondary border-l border-[#E5E5E5]">Historical</span>
+</div>
+</div>
+<h2 class="text-base font-semibold text-ink leading-snug mb-3">Khadakwasla dam gates burst, evacuate now</h2>
+<div class="flex items-center gap-2">
+<span class="h-[22px] px-2 rounded-full border border-[#E5E5E5] bg-white text-ink text-[12px] flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>Conflicting
+            </span>
+<span class="px-1.5 py-0.5 border border-[#E5E5E5] rounded text-[11px] text-secondary">Numeric conflict</span>
+<span class="font-mono text-[11px] text-muted ml-auto">Conf: Med-High</span>
+</div>
+</div>
+<div class="p-4 border-b border-[#E5E5E5]">
+<div class="text-[11px] text-muted font-sans uppercase tracking-wider mb-2">What's Being Claimed</div>
+<div class="space-y-2 text-xs">
+<div class="p-2 border border-[#E5E5E5] rounded flex items-center justify-between">
+<span class="flex items-center gap-2 text-ink">
+<span class="material-symbols-outlined text-[14px] text-secondary">check</span>Heavy rain and flooding in Pune today
+              </span>
+<span class="font-mono text-[10px] text-secondary border border-[#E5E5E5] px-1 rounded">Supported</span>
+</div>
+<div class="p-2 border border-[#E5E5E5] rounded flex items-center justify-between">
+<span class="flex items-center gap-2 text-ink">
+<span class="material-symbols-outlined text-[14px] text-secondary">close</span>Khadakwasla dam gates burst
+              </span>
+<span class="font-mono text-[10px] text-secondary border border-[#E5E5E5] px-1 rounded">Contradicted</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<!-- ======================================================== -->
+<!-- MODAL BACKDROP (Flat 40% white/grey overlay, no blur)    -->
+<!-- ======================================================== -->
+<div class="absolute inset-0 bg-[#171717]/40 flex items-center justify-center z-50">
+<!-- ====================================================== -->
+<!-- MODAL CONTAINER (640px, white, 1px border, 8px radius) -->
+<!-- ====================================================== -->
+<div class="w-[640px] bg-white rounded-lg border border-[#E5E5E5] shadow-none flex flex-col overflow-hidden animate-in fade-in duration-150">
+<!-- Modal Header -->
+<div class="h-13 px-6 py-3.5 border-b border-[#E5E5E5] flex items-center justify-between bg-white">
+<div>
+<h1 class="text-sm font-semibold text-ink tracking-tight">Check a post</h1>
+<p class="text-[11px] text-muted mt-0.5">Cross-reference social reports against real-time sensors, alerts, and dispatches</p>
+</div>
+<button class="w-7 h-7 rounded border border-[#E5E5E5] text-secondary hover:text-ink hover:border-ink flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-6 space-y-4 max-h-[720px] overflow-y-auto">
+<!-- Form Section -->
+<div class="space-y-3.5">
+<!-- Textarea Input -->
+<div>
+<label class="block text-[11px] font-sans uppercase tracking-wider text-muted mb-1.5">
+              Paste the message, caption or link
+            </label>
+<textarea class="w-full text-xs font-sans text-ink bg-white border border-[#E5E5E5] rounded-md p-3 focus:border-ink resize-none leading-relaxed transition-colors" placeholder="Paste the message, caption or link" rows="3">Pune flooding near Sinhagad Road, shops being looted, share fast</textarea>
+</div>
+<!-- Row of three inputs -->
+<div class="grid grid-cols-3 gap-3">
+<!-- Posted at datetime -->
+<div>
+<label class="block text-[11px] font-sans uppercase tracking-wider text-muted mb-1.5">Posted at</label>
+<div class="relative">
+<input class="w-full h-8 px-2.5 font-mono text-xs text-ink bg-white border border-[#E5E5E5] rounded-md focus:border-ink transition-colors" type="text" value="Today, 14:15 IST"/>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-[14px] text-muted pointer-events-none">schedule</span>
+</div>
+</div>
+<!-- Place (if known) -->
+<div>
+<label class="block text-[11px] font-sans uppercase tracking-wider text-muted mb-1.5">Place (if known)</label>
+<div class="relative">
+<input class="w-full h-8 px-2.5 text-xs text-ink bg-white border border-[#E5E5E5] rounded-md focus:border-ink transition-colors" placeholder="e.g. Pune, Maharashtra" type="text" value="Sinhagad Road, Pune"/>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-[14px] text-muted pointer-events-none">location_on</span>
+</div>
+</div>
+<!-- Language select -->
+<div>
+<label class="block text-[11px] font-sans uppercase tracking-wider text-muted mb-1.5">Language</label>
+<div class="relative">
+<select class="w-full h-8 pl-2.5 pr-7 text-xs text-ink bg-white border border-[#E5E5E5] rounded-md focus:border-ink transition-colors appearance-none cursor-pointer">
+<option selected="">Auto (detected mr/en)</option>
+<option>Marathi (मराठी)</option>
+<option>Hindi (हिंदी)</option>
+<option>English</option>
+<option>Telugu (తెలుగు)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-[14px] text-muted pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Dashed 1px grey drop zone -->
+<div class="border border-dashed border-[#E5E5E5] rounded-md p-3.5 bg-[#FAFAFA] flex items-center justify-center gap-2.5 hover:border-secondary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px] text-secondary">upload_file</span>
+<span class="text-xs text-secondary">Add screenshot or video <span class="text-muted">(optional)</span></span>
+<span class="font-mono text-[10px] text-muted px-1.5 py-0.5 border border-[#E5E5E5] rounded bg-white ml-1">PNG, JPG, MP4 &lt; 50MB</span>
+</div>
+<!-- Context toggle & Actions -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2">
+<span class="text-xs text-secondary">Verification context:</span>
+<div class="inline-flex border border-[#E5E5E5] rounded p-0.5 bg-white text-xs">
+<button class="px-2.5 py-0.5 bg-white font-medium border border-[#0F766E] rounded-sm text-[11px] text-[#0F766E]">Current</button>
+<button class="px-2.5 py-0.5 text-secondary text-[11px] hover:text-ink">Historical</button>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-8 px-3.5 bg-white text-ink border border-[#E5E5E5] rounded text-xs font-medium hover:border-ink transition-colors">
+                Cancel
+              </button>
+<button class="h-8 px-4 bg-[#0F766E] text-white rounded text-xs font-medium hover:bg-[#115E59] transition-colors flex items-center gap-1.5">
+<span>Verify</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Hairline Divider -->
+<div class="h-px w-full bg-[#E5E5E5]"></div>
+<!-- Slim Progress Pipeline List -->
+<div>
+<div class="flex items-center justify-between text-[11px] text-muted uppercase font-sans tracking-wider mb-2.5">
+<span>Verification Pipeline</span>
+<span class="font-mono text-[11px] lowercase text-secondary">step 6 of 7 · running</span>
+</div>
+<!-- 7-step horizontal / wrapped granular pill line -->
+<div class="p-3 border border-[#E5E5E5] rounded-md bg-[#FAFAFA] flex flex-wrap items-center gap-y-2 gap-x-2.5 text-xs">
+<!-- Step 1: Checked -->
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[13px] text-ink">check</span>
+<span>Reading claim</span>
+</div>
+<span class="text-[#E5E5E5]">·</span>
+<!-- Step 2: Checked -->
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[13px] text-ink">check</span>
+<span>Splitting into facts</span>
+</div>
+<span class="text-[#E5E5E5]">·</span>
+<!-- Step 3: Checked -->
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[13px] text-ink">check</span>
+<span>Finding place</span>
+</div>
+<span class="text-[#E5E5E5]">·</span>
+<!-- Step 4: Checked -->
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[13px] text-ink">check</span>
+<span>Searching official alerts</span>
+</div>
+<span class="text-[#E5E5E5]">·</span>
+<!-- Step 5: Checked -->
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[13px] text-ink">check</span>
+<span>Checking weather</span>
+</div>
+<span class="text-[#E5E5E5]">·</span>
+<!-- Step 6: In-progress Spinner -->
+<div class="flex items-center gap-1 text-ink font-medium">
+<span class="material-symbols-outlined text-[13px] text-ink animate-spin-custom">progress_activity</span>
+<span>Searching local news</span>
+</div>
+<span class="text-[#E5E5E5]">·</span>
+<!-- Step 7: Pending -->
+<div class="flex items-center gap-1 text-muted">
+<span class="w-2.5 h-2.5 rounded-full border border-[#E5E5E5] inline-block mr-0.5"></span>
+<span>Deciding</span>
+</div>
+</div>
+</div>
+<!-- Compact Result Card -->
+<div class="border border-[#E5E5E5] rounded-lg p-3.5 bg-white space-y-2.5">
+<div class="flex items-center justify-between">
+<!-- Status Pill: 22px tall, white bg, 1px border, 12px text, 6px dot -->
+<span class="h-[22px] px-2.5 rounded-full border border-[#E5E5E5] bg-white text-ink text-[12px] font-normal inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#6B7A99]"></span>
+              Unverified
+            </span>
+<span class="text-[11px] font-mono text-muted">REF-SUB-9402</span>
+</div>
+<!-- Result line -->
+<p class="text-xs text-ink leading-relaxed font-normal">
+            Flooding confirmed; the reported looting is not confirmed by any source.
+          </p>
+<!-- Mono muted line & Action link -->
+<div class="pt-1.5 border-t border-[#E5E5E5] flex items-center justify-between text-xs">
+<span class="font-mono text-[11px] text-muted">
+              Joined existing story · seen 23 times in 3 languages
+            </span>
+<a class="text-xs font-medium hover:underline inline-flex items-center gap-0.5 text-[#0F766E]" href="#">
+<span>Open full story</span>
+<span class="font-sans">→</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Modal Footer Status Info -->
+<div class="px-6 py-2.5 border-t border-[#E5E5E5] bg-[#FAFAFA] flex items-center justify-between text-[11px] text-muted font-mono">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+<span class="font-sans text-secondary">Dispatcher pipeline online</span>
+</div>
+<span>ESC to dismiss · ↵ to submit</span>
+</div>
+</div>
+</div>
+</body>
+</html>

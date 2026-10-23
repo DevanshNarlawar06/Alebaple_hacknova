@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SachVerify — Benchmark Review Tool (D5)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            page: '#FFFFFF',
+            surface: '#FAFAFA',
+            border: '#E5E5E5',
+            ink: {
+              primary: '#171717',
+              secondary: '#525252',
+              muted: '#A3A3A3',
+            },
+            status: {
+              verified: '#5F7F68',
+              conflicting: '#A88442',
+              outdated: '#A3A3A3',
+              unverified: '#6B7A99',
+            }
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      background-color: #FFFFFF;
+      color: #171717;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Subtle custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FFFFFF;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #E5E5E5;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #D4D4D4;
+    }
+    .kbd-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      line-height: 1;
+      padding: 2px 5px;
+      border: 1px solid #E5E5E5;
+      border-radius: 4px;
+      background: #FAFAFA;
+      color: #525252;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-page text-ink-primary flex flex-col font-sans selection:bg-neutral-100">
+<!-- Top Header Bar -->
+<header class="w-full border-b border-[#E5E5E5] bg-page sticky top-0 z-40">
+<div class="h-14 px-6 flex items-center justify-between max-w-[1440px] mx-auto w-full">
+<!-- Brand & Benchmark Case Selector -->
+<div class="flex items-center gap-6">
+<a class="font-semibold text-[15px] tracking-tight text-ink-primary flex items-center gap-2" href="#">
+          SachVerify
+          <span class="text-[11px] font-mono font-normal text-ink-muted px-1.5 py-0.5 border border-[#E5E5E5] rounded bg-surface">BENCHMARK v1.4</span>
+</a>
+<div class="h-4 w-[1px] bg-[#E5E5E5]"></div>
+<div class="flex items-center gap-3">
+<span class="text-sm font-medium text-ink-primary">Review case 12 of 58</span>
+<div class="flex items-center border border-[#E5E5E5] rounded-md bg-page overflow-hidden">
+<button class="p-1 hover:bg-surface text-ink-secondary hover:text-ink-primary border-r border-[#E5E5E5] transition-colors" title="Previous case (Key: [)">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<button class="p-1 hover:bg-surface text-ink-secondary hover:text-ink-primary transition-colors" title="Next case (Key: ])">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Meta Tools -->
+<div class="flex items-center gap-4">
+<span class="text-xs font-mono text-ink-muted">DATASET: CRISISMMD-PUNE-24</span>
+<div class="h-4 w-[1px] bg-[#E5E5E5]"></div>
+<button class="text-xs font-mono text-ink-secondary hover:text-ink-primary flex items-center gap-1.5 px-2.5 py-1 rounded border border-[#E5E5E5] bg-page hover:bg-surface transition-colors">
+<span>Shortcuts</span>
+<span class="kbd-chip">?</span>
+</button>
+<button class="text-xs font-mono text-ink-secondary hover:text-ink-primary flex items-center gap-1.5 px-2.5 py-1 rounded border border-[#E5E5E5] bg-page hover:bg-surface transition-colors">
+<span>Save &amp; Exit</span>
+</button>
+</div>
+</div>
+<!-- Benchmark Progress Bar Header Underline -->
+<div class="border-t border-[#E5E5E5] bg-surface px-6 py-2">
+<div class="max-w-[1440px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-2">
+<div class="flex items-center gap-3 w-full md:w-3/5">
+<!-- Multi-segment bar -->
+<div class="w-full h-1.5 bg-[#E5E5E5] rounded-full overflow-hidden flex">
+<!-- 34 approved: 34/58 ≈ 58.6% (#171717) -->
+<div class="bg-[#171717] h-full" style="width: 58.6%;" title="34 approved"></div>
+<!-- 6 edited: 6/58 ≈ 10.3% (#525252) -->
+<div class="bg-[#525252] h-full" style="width: 10.3%;" title="6 edited"></div>
+<!-- 9 rejected: 9/58 ≈ 15.5% (#A3A3A3) -->
+<div class="bg-[#A3A3A3] h-full" style="width: 15.5%;" title="9 rejected"></div>
+<!-- 9 left: remaining in #E5E5E5 -->
+</div>
+</div>
+<!-- Mono Progress Legend -->
+<div class="text-[12px] font-mono text-ink-secondary whitespace-nowrap flex items-center gap-3">
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#171717]"></span>34 approved</span>
+<span class="text-ink-muted">·</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#525252]"></span>6 edited</span>
+<span class="text-ink-muted">·</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#A3A3A3]"></span>9 rejected</span>
+<span class="text-ink-muted">·</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#E5E5E5] border border-neutral-300"></span>9 left</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content: Two Split Panes -->
+<main class="flex-1 max-w-[1440px] w-full mx-auto flex flex-col lg:flex-row pb-24">
+<!-- LEFT PANE: Read-only Case Inspection (~60%) -->
+<section class="lg:w-[60%] border-r border-[#E5E5E5] p-6 lg:p-8 space-y-8 bg-page overflow-y-auto">
+<!-- Primary Claim Header Block -->
+<div class="space-y-3 pb-6 border-b border-[#E5E5E5]">
+<div class="flex flex-wrap items-center gap-2">
+<span class="text-[11px] font-mono uppercase tracking-wider text-ink-muted">CASE ID: CRISIS-IN-2024-0824</span>
+<span class="text-ink-muted">·</span>
+<span class="px-2 py-0.5 rounded text-xs border border-[#E5E5E5] text-ink-secondary font-medium">Real (CrisisMMD)</span>
+<span class="px-2 py-0.5 rounded text-xs border border-[#E5E5E5] text-ink-secondary font-medium">Source: X / Twitter</span>
+</div>
+<h1 class="text-[20px] font-semibold text-ink-primary leading-snug tracking-tight">
+          “Khadakwasla dam gates burst, evacuate now”
+        </h1>
+<!-- Proposed Context & Status Pill -->
+<div class="flex items-center gap-4 pt-1">
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-mono uppercase text-ink-muted">PROPOSED CONTEXT</span>
+<span class="text-xs font-mono px-2 py-0.5 bg-surface border border-[#E5E5E5] rounded text-ink-primary">Current</span>
+</div>
+<div class="h-3 w-[1px] bg-[#E5E5E5]"></div>
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-mono uppercase text-ink-muted">PROPOSED STATUS</span>
+<!-- Status pill rule: rounded-full, white bg, 1px #E5E5E5 border, 12px #171717 text, 6px coloured dot -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white border border-[#E5E5E5] text-xs font-medium text-ink-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>
+              Conflicting
+            </div>
+</div>
+<div class="h-3 w-[1px] bg-[#E5E5E5]"></div>
+<div class="flex items-center gap-1.5 text-xs text-ink-secondary font-mono">
+<span>MODEL CONFIDENCE:</span>
+<span class="font-medium text-ink-primary">0.82 (High)</span>
+</div>
+</div>
+</div>
+<!-- Section: Atomic Facts -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-mono uppercase tracking-wider text-ink-muted">ATOMIC FACTS</span>
+<span class="text-xs font-mono text-ink-muted">(3 items)</span>
+</div>
+<span class="text-[11px] font-mono text-ink-muted">DECONSTRUCTION v2.4</span>
+</div>
+<div class="border border-[#E5E5E5] rounded-md overflow-hidden divide-y divide-[#E5E5E5] bg-page">
+<!-- Proposition 1 -->
+<div class="p-3.5 flex items-start justify-between gap-4 hover:bg-surface transition-colors">
+<div class="space-y-1">
+<div class="text-sm text-ink-primary font-normal leading-normal">
+                Heavy rain and flooding reported in Pune metropolitan area today
+              </div>
+<div class="text-[11px] font-mono text-ink-muted flex items-center gap-2">
+<span>SCOPE: Core</span>
+<span>·</span>
+<span>TYPE: Observation</span>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 pt-0.5">
+<span class="text-xs font-mono text-ink-secondary">Supported</span>
+<span class="text-sm font-semibold text-ink-secondary font-mono" title="Supported">✓</span>
+</div>
+</div>
+<!-- Proposition 2 -->
+<div class="p-3.5 flex items-start justify-between gap-4 hover:bg-surface transition-colors">
+<div class="space-y-1">
+<div class="text-sm text-ink-primary font-normal leading-normal">
+                Khadakwasla dam gates burst or suffered catastrophic structural breach
+              </div>
+<div class="text-[11px] font-mono text-ink-muted flex items-center gap-2">
+<span>SCOPE: Core</span>
+<span>·</span>
+<span>TYPE: Hazard Claim</span>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 pt-0.5">
+<span class="text-xs font-mono text-ink-secondary">Contradicted</span>
+<span class="text-sm font-semibold text-ink-secondary font-mono" title="Contradicted">✕</span>
+</div>
+</div>
+<!-- Proposition 3 -->
+<div class="p-3.5 flex items-start justify-between gap-4 hover:bg-surface transition-colors">
+<div class="space-y-1">
+<div class="text-sm text-ink-primary font-normal leading-normal">
+                Immediate evacuation required within 2 hours for downstream riverside sectors
+              </div>
+<div class="text-[11px] font-mono text-ink-muted flex items-center gap-2">
+<span>SCOPE: Action directive</span>
+<span>·</span>
+<span>TYPE: Instruction</span>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 pt-0.5">
+<span class="text-xs font-mono text-ink-secondary">Unverified</span>
+<span class="text-sm font-semibold text-ink-secondary font-mono" title="Unverified">?</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Supporting Evidence (2 items) -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-mono uppercase tracking-wider text-ink-muted">SUPPORTING EVIDENCE</span>
+<span class="text-xs font-mono text-ink-muted">(2 sources)</span>
+</div>
+<span class="text-[11px] font-mono text-ink-muted">CROSS-REFERENCED</span>
+</div>
+<div class="space-y-3">
+<!-- Evidence Item 1 -->
+<div class="p-4 rounded-md border border-[#E5E5E5] bg-page space-y-2.5">
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-ink-primary">NDMA SACHET Alert System</span>
+<span class="px-1.5 py-0.5 rounded text-[11px] border border-[#E5E5E5] text-ink-secondary font-mono">Official alert</span>
+</div>
+<span class="font-mono text-xs text-ink-muted">06 Aug 13:45 IST · 42m ago</span>
+</div>
+<div class="pl-3 border-l-2 border-[#E5E5E5] text-xs text-ink-secondary leading-relaxed">
+              “Red alert active for Pune district. Mutha river basin discharge expected to increase following sustained catchment rainfall.”
+            </div>
+<div class="pt-1 flex items-center justify-between text-xs font-mono">
+<span class="text-ink-muted">REF: NDMA-PUN-0806</span>
+<a class="flex items-center gap-1 transition-colors text-[#0F766E]" href="#">
+                Open source ↗
+              </a>
+</div>
+</div>
+<!-- Evidence Item 2 -->
+<div class="p-4 rounded-md border border-[#E5E5E5] bg-page space-y-2.5">
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-ink-primary">Open-Meteo Khadakwasla Telemetry</span>
+<span class="px-1.5 py-0.5 rounded text-[11px] border border-[#E5E5E5] text-ink-secondary font-mono">Sensor</span>
+</div>
+<span class="font-mono text-xs text-ink-muted">06 Aug 14:15 IST · 15m ago</span>
+</div>
+<div class="pl-3 border-l-2 border-[#E5E5E5] text-xs text-ink-secondary leading-relaxed">
+              “Cumulative precipitation 142.4 mm in 24h window at catchment coordinates 18.4285° N, 73.7634° E. Runoff velocity nominal.”
+            </div>
+<div class="pt-1 flex items-center justify-between text-xs font-mono">
+<span class="text-ink-muted">REF: SENS-OM-4410</span>
+<a class="flex items-center gap-1 transition-colors text-[#0F766E]" href="#">
+                Open source ↗
+              </a>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Contradicting Evidence (2 items) -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-mono uppercase tracking-wider text-ink-muted">CONTRADICTING EVIDENCE</span>
+<span class="text-xs font-mono text-ink-muted">(2 sources)</span>
+</div>
+<span class="text-[11px] font-mono text-ink-muted">REFUTATION RECORDS</span>
+</div>
+<div class="space-y-3">
+<!-- Evidence Item 1 -->
+<div class="p-4 rounded-md border border-[#E5E5E5] bg-page space-y-2.5">
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-ink-primary">Pune Irrigation Department Executive Bulletin</span>
+<span class="px-1.5 py-0.5 rounded text-[11px] border border-[#E5E5E5] text-ink-secondary font-mono">Official bulletin</span>
+</div>
+<span class="font-mono text-xs text-ink-muted">06 Aug 14:00 IST · 30m ago</span>
+</div>
+<div class="pl-3 border-l-2 border-[#E5E5E5] text-xs text-ink-secondary leading-relaxed">
+              “Gates opened for calibrated, controlled discharge of 9,000 cusecs at 13:30 IST. Spillway and sluice gates structurally intact; no breach, failure, or uncontrolled overflow has occurred.”
+            </div>
+<div class="pt-1 flex items-center justify-between text-xs font-mono">
+<span class="text-ink-muted">REF: GOV-MH-IRR-992</span>
+<a class="flex items-center gap-1 transition-colors text-[#0F766E]" href="#">
+                Open source ↗
+              </a>
+</div>
+</div>
+<!-- Evidence Item 2 -->
+<div class="p-4 rounded-md border border-[#E5E5E5] bg-page space-y-2.5">
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-ink-primary">Lokmat Pune City Desk Investigation</span>
+<span class="px-1.5 py-0.5 rounded text-[11px] border border-[#E5E5E5] text-ink-secondary font-mono">Local news</span>
+</div>
+<span class="font-mono text-xs text-ink-muted">06 Aug 14:08 IST · 22m ago</span>
+</div>
+<div class="pl-3 border-l-2 border-[#E5E5E5] text-xs text-ink-secondary leading-relaxed">
+              “Irrigation executive engineers on site confirm normal regulated spillway discharge. Viral WhatsApp and X videos depicting collapsed floodgates belong to 2019 Kolhapur breach.”
+            </div>
+<div class="pt-1 flex items-center justify-between text-xs font-mono">
+<span class="text-ink-muted">REF: NEWS-LOK-7731</span>
+<a class="flex items-center gap-1 transition-colors text-[#0F766E]" href="#">
+                Open source ↗
+              </a>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Time & Place Analysis (Short paragraphs with mono values) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Time Analysis -->
+<div class="p-4 border border-[#E5E5E5] rounded-md bg-page space-y-2">
+<div class="text-[11px] font-mono uppercase tracking-wider text-ink-muted">TIME ANALYSIS</div>
+<p class="text-xs text-ink-secondary leading-relaxed">
+            Incident post surfaced at <span class="font-mono text-ink-primary font-medium">06 Aug 14:15 IST</span>. Closest preceding verified directive was issued at <span class="font-mono text-ink-primary font-medium">14:00 IST</span> (delta: <span class="font-mono text-ink-primary font-medium">-15m</span>). Valid directive window is active for <span class="font-mono text-ink-primary font-medium">3h 45m</span> until <span class="font-mono text-ink-primary font-medium">17:45 IST</span>.
+          </p>
+</div>
+<!-- Place Analysis -->
+<div class="p-4 border border-[#E5E5E5] rounded-md bg-page space-y-2">
+<div class="text-[11px] font-mono uppercase tracking-wider text-ink-muted">PLACE ANALYSIS</div>
+<p class="text-xs text-ink-secondary leading-relaxed">
+            Claim targets <span class="font-mono text-ink-primary font-medium">Khadakwasla Dam</span> (<span class="font-mono text-ink-primary font-medium">18.4285° N, 73.7634° E</span>, elevation <span class="font-mono text-ink-primary font-medium">582m MSL</span>). Matched within <span class="font-mono text-ink-primary font-medium">120m</span> radius of the irrigation telemetry gauge. Administrative ward: <span class="font-mono text-ink-primary font-medium">Haveli Tehsil, Pune Rural</span>.
+          </p>
+</div>
+</div>
+<!-- Section: Proposed Reasoning -->
+<div class="p-4 border border-[#E5E5E5] rounded-md bg-surface space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-mono uppercase tracking-wider text-ink-muted">PROPOSED REASONING</span>
+<span class="text-[11px] font-mono text-ink-muted">PIPELINE HEURISTIC #4B</span>
+</div>
+<p class="text-xs text-ink-secondary leading-relaxed">
+          The claim pairs an accurate environmental baseline (monsoon downpour and local flooding) with a fabricated catastrophic claim (dam gate structural failure). Because the core hazard assertion is explicitly contradicted by on-site official engineering dispatches within the same 30-minute validity envelope, the case receives a composite status of <span class="font-mono text-ink-primary font-medium">Conflicting</span> under the dual-premise arbitration rule.
+        </p>
+</div>
+</section>
+<!-- RIGHT PANE: Editable Form (~40%) -->
+<section class="lg:w-[40%] p-6 lg:p-8 space-y-6 bg-surface overflow-y-auto">
+<div class="space-y-1 pb-4 border-b border-[#E5E5E5]">
+<div class="flex items-center justify-between">
+<h2 class="text-sm font-semibold text-ink-primary tracking-tight">Reviewer Verdict &amp; Overrides</h2>
+<span class="text-[11px] font-mono text-ink-muted">STAGE: AUDIT</span>
+</div>
+<p class="text-xs text-ink-secondary">
+          Validate or override the automated pipeline classifications before finalizing benchmark baseline.
+        </p>
+</div>
+<!-- Form Selects: Status, Subtype, Context -->
+<div class="space-y-4">
+<!-- Status Select -->
+<div class="space-y-1.5">
+<label class="block text-xs font-medium text-ink-primary">
+            Status <span class="text-ink-muted font-normal">(verdict)</span>
+</label>
+<div class="relative">
+<select class="w-full h-9 px-3 text-xs bg-white border border-[#E5E5E5] rounded-[6px] text-ink-primary focus:outline-none focus:border-ink-primary transition-colors appearance-none">
+<option selected="" value="conflicting">Conflicting (partial fact with contradicted core)</option>
+<option value="verified">Verified (confirmed by authoritative telemetry/directives)</option>
+<option value="outdated">Outdated (true at publication, superseded by newer order)</option>
+<option value="unverified">Unverified (insufficient contemporaneous sources)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-ink-secondary">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Subtype Select -->
+<div class="space-y-1.5">
+<label class="block text-xs font-medium text-ink-primary">
+            Subtype
+          </label>
+<div class="relative">
+<select class="w-full h-9 px-3 text-xs bg-white border border-[#E5E5E5] rounded-[6px] text-ink-primary focus:outline-none focus:border-ink-primary transition-colors appearance-none">
+<option value="numeric_conflict">Numeric / structural conflict</option>
+<option selected="" value="false_alarm">False alarm (dam/evacuation hoax)</option>
+<option value="recycled_media">Recycled media / outdated footage</option>
+<option value="misattributed_location">Misattributed geography</option>
+<option value="unauthorized_directive">Unauthorized civilian directive</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-ink-secondary">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Context Select -->
+<div class="space-y-1.5">
+<label class="block text-xs font-medium text-ink-primary">
+            Context window
+          </label>
+<div class="relative">
+<select class="w-full h-9 px-3 text-xs bg-white border border-[#E5E5E5] rounded-[6px] text-ink-primary focus:outline-none focus:border-ink-primary transition-colors appearance-none">
+<option selected="" value="current">Current (live crisis operational envelope)</option>
+<option value="historical">Historical (post-event retrospective evaluation)</option>
+<option value="superseded">Superseded directive review</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-ink-secondary">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<!-- Per-Fact State Selects (3 rows) -->
+<div class="space-y-3 pt-2">
+<div class="flex items-center justify-between">
+<label class="block text-xs font-medium text-ink-primary">
+            Per-fact state adjudication
+          </label>
+<span class="text-[11px] font-mono text-ink-muted">3 PROPOSITIONS</span>
+</div>
+<div class="space-y-2.5">
+<!-- Fact 1 Row -->
+<div class="p-3 bg-white border border-[#E5E5E5] rounded-[6px] space-y-2">
+<div class="text-xs text-ink-primary line-clamp-1">
+              1. Heavy rain and flooding in Pune today
+            </div>
+<div class="relative">
+<select class="w-full h-8 px-2.5 text-xs bg-surface border border-[#E5E5E5] rounded-[6px] text-ink-primary focus:outline-none focus:border-ink-primary appearance-none">
+<option selected="" value="supported">Supported (✓)</option>
+<option value="contradicted">Contradicted (✕)</option>
+<option value="unverified">Unverified (?)</option>
+<option value="outdated">Outdated (⟲)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-ink-secondary">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Fact 2 Row -->
+<div class="p-3 bg-white border border-[#E5E5E5] rounded-[6px] space-y-2">
+<div class="text-xs text-ink-primary line-clamp-1">
+              2. Khadakwasla dam gates burst
+            </div>
+<div class="relative">
+<select class="w-full h-8 px-2.5 text-xs bg-surface border border-[#E5E5E5] rounded-[6px] text-ink-primary focus:outline-none focus:border-ink-primary appearance-none">
+<option selected="" value="contradicted">Contradicted (✕)</option>
+<option value="supported">Supported (✓)</option>
+<option value="unverified">Unverified (?)</option>
+<option value="outdated">Outdated (⟲)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-ink-secondary">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Fact 3 Row -->
+<div class="p-3 bg-white border border-[#E5E5E5] rounded-[6px] space-y-2">
+<div class="text-xs text-ink-primary line-clamp-1">
+              3. Evacuate within 2 hours
+            </div>
+<div class="relative">
+<select class="w-full h-8 px-2.5 text-xs bg-surface border border-[#E5E5E5] rounded-[6px] text-ink-primary focus:outline-none focus:border-ink-primary appearance-none">
+<option selected="" value="unverified">Unverified (?)</option>
+<option value="supported">Supported (✓)</option>
+<option value="contradicted">Contradicted (✕)</option>
+<option value="outdated">Outdated (⟲)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-ink-secondary">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Textarea: Reviewer Note -->
+<div class="space-y-1.5 pt-2">
+<div class="flex items-center justify-between">
+<label class="block text-xs font-medium text-ink-primary">
+            Reviewer note
+          </label>
+<span class="text-[11px] font-mono text-ink-muted">OPTIONAL AUDIT REMARK</span>
+</div>
+<textarea class="w-full p-3 text-xs bg-white border border-[#E5E5E5] rounded-[6px] text-ink-primary placeholder:text-ink-muted focus:outline-none focus:border-ink-primary transition-colors resize-none leading-relaxed" placeholder="Document specific rationale if modifying pipeline proposition states or ground truth verdict..." rows="4">Pipeline extraction correctly isolated the true weather premise from the fabricated dam failure claim. Verified against Irrigation Department Bulletin #GOV-MH-IRR-992. No changes needed to default adjudication.</textarea>
+</div>
+<!-- Reviewer Attestation Info Box -->
+<div class="p-3 border border-[#E5E5E5] rounded-[6px] bg-white text-[11px] font-mono text-ink-secondary space-y-1">
+<div class="flex justify-between">
+<span>REVIEWER:</span>
+<span class="text-ink-primary">auditor_rk@sachverify.org</span>
+</div>
+<div class="flex justify-between">
+<span>RECORD HASH:</span>
+<span class="text-ink-primary">SHA256: 3c8e...a109</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BOTTOM STICKY BAR: Actions with Keyboard Hints -->
+<footer class="fixed bottom-0 inset-x-0 bg-white border-t border-[#E5E5E5] z-50">
+<div class="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
+<!-- Left side: Session & Progress Quick Info -->
+<div class="flex items-center gap-4 text-xs font-mono text-ink-muted">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-700/60"></span>
+          Auto-saved 14:22:04 IST
+        </span>
+<span class="text-[#E5E5E5]">|</span>
+<span>Case 12 / 58 (49 remaining)</span>
+</div>
+<!-- Right side: Review Action Buttons -->
+<div class="flex items-center gap-3">
+<!-- Reject Button [R] -->
+<button class="h-9 px-4 rounded-[6px] bg-white border border-[#E5E5E5] text-xs font-medium text-ink-primary hover:bg-surface hover:border-neutral-300 transition-colors flex items-center gap-2">
+<span>Reject</span>
+<span class="kbd-chip">R</span>
+</button>
+<!-- Edit & Approve Button [E] -->
+<button class="h-9 px-4 rounded-[6px] bg-white border text-xs font-medium hover:bg-surface hover:border-neutral-300 transition-colors flex items-center gap-2 border-[#0F766E] text-[#0F766E]">
+<span>Edit &amp; approve</span>
+<span class="kbd-chip">E</span>
+</button>
+<!-- Primary Approve Button [A] -->
+<button class="h-9 px-4 rounded-[6px] bg-[#0F766E] text-white text-xs font-medium hover:bg-[#115E59] transition-colors flex items-center gap-2">
+<span>Approve</span>
+<span class="font-mono text-[11px] px-1.5 py-0.5 rounded bg-white/20 text-white leading-none">A</span>
+</button>
+</div>
+</div>
+</footer>
+</body>
+</html>

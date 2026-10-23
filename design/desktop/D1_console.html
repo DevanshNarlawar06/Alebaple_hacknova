@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SachVerify — Incident Dispatch &amp; Verification Console</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-tint": "#5f5e5e",
+            "on-secondary-fixed-variant": "#3b3b3b",
+            "surface-bright": "#fbf9f9",
+            "secondary": "#525252",
+            "primary": "#171717",
+            "on-secondary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "error-container": "#ffdad6",
+            "tertiary-container": "#747474",
+            "surface-dim": "#dbdad9",
+            "primary-fixed": "#5f5e5e",
+            "on-surface-variant": "#474747",
+            "on-primary": "#ffffff",
+            "surface-variant": "#e3e2e2",
+            "tertiary-fixed": "#5e5e5e",
+            "tertiary-fixed-dim": "#474747",
+            "surface-container-high": "#e9e8e7",
+            "on-error": "#ffffff",
+            "on-primary-fixed-variant": "#e5e2e1",
+            "on-primary-container": "#ffffff",
+            "background": "#ffffff",
+            "surface-container-low": "#fafafa",
+            "surface": "#ffffff",
+            "secondary-container": "#d4d4d4",
+            "on-background": "#171717",
+            "error": "#ba1a1a",
+            "surface-container": "#efeded",
+            "tertiary": "#3b3b3b",
+            "on-secondary-container": "#1b1b1b",
+            "on-primary-fixed": "#ffffff",
+            "secondary-fixed-dim": "#ababab",
+            "secondary-fixed": "#c6c6c6",
+            "inverse-surface": "#303031",
+            "primary-fixed-dim": "#474746",
+            "on-tertiary-fixed-variant": "#e2e2e2",
+            "on-error-container": "#410002",
+            "on-tertiary-fixed": "#ffffff",
+            "on-secondary-fixed": "#1b1b1b",
+            "inverse-on-surface": "#f2f0f0",
+            "outline": "#e5e5e5",
+            "on-tertiary": "#e2e2e2",
+            "on-tertiary-container": "#ffffff",
+            "inverse-primary": "#c8c6c5",
+            "on-surface": "#171717",
+            "surface-container-highest": "#e3e2e2",
+            "primary-container": "#3c3b3b",
+            "outline-variant": "#e5e5e5",
+            // Specific Status Semantic Colors (Only used in dots & map coordinates)
+            "status-verified": "#5F7F68",
+            "status-conflicting": "#A88442",
+            "status-outdated": "#A3A3A3",
+            "status-unverified": "#6B7A99"
+          },
+          fontFamily: {
+            headline: ["Inter", "sans-serif"],
+            display: ["Inter", "sans-serif"],
+            body: ["Inter", "sans-serif"],
+            label: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #ffffff;
+      color: #171717;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+      font-size: 18px;
+      line-height: 1;
+      display: inline-block;
+    }
+    /* Custom subtle scrollbars for high-density UI */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #fafafa;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #e5e5e5;
+      border-radius: 2px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #c6c6c6;
+    }
+  </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col bg-background text-[#171717]">
+<!-- TOP BAR (56px high, Shared TopNavBar Specs Applied) -->
+<header class="flex justify-between items-center w-full px-4 h-14 sticky top-0 z-50 border-b border-outline-variant bg-surface-container-lowest">
+<!-- Brand Wordmark & Left Utility -->
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="text-base font-semibold tracking-tight text-[#171717]">SachVerify</span>
+<span class="font-mono text-[10px] text-[#A3A3A3] px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-[#FAFAFA]">DISPATCH v2.4</span>
+</div>
+</div>
+<!-- Center Search Container -->
+<div class="relative w-[380px]">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#525252]">
+<span class="material-symbols-outlined text-[16px]">search</span>
+</div>
+<input class="w-full pl-9 pr-12 py-1.5 text-xs bg-[#FAFAFA] border border-[#E5E5E5] rounded focus:outline-none focus:border-[#0F766E] focus:bg-white text-[#171717] placeholder-[#A3A3A3] transition-colors" placeholder="Search place, hazard or claim" type="text"/>
+<div class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none">
+<span class="font-mono text-[11px] text-[#A3A3A3] bg-white border border-[#E5E5E5] px-1.5 py-0.5 rounded leading-none">⌘K</span>
+</div>
+</div>
+<!-- Right Cluster Actions -->
+<div class="flex items-center gap-3">
+<!-- Live | Replay Segmented Control -->
+<div class="flex items-center bg-[#FAFAFA] border border-[#E5E5E5] rounded p-0.5 text-xs">
+<button class="px-2.5 py-1 bg-white border border-[#E5E5E5] font-medium text-[#171717] rounded-sm text-xs shadow-none">Live</button>
+<button class="px-2.5 py-1 text-[#A3A3A3] hover:text-[#525252] text-xs transition-colors">Replay</button>
+</div>
+<!-- Live Feed Indicator -->
+<div class="flex items-center gap-1.5 px-2">
+<span class="w-1.5 h-1.5 rounded-full bg-[#525252]"></span>
+<span class="text-xs text-[#525252]">Live feeds OK</span>
+</div>
+<div class="h-4 w-[1px] bg-[#E5E5E5]"></div>
+<!-- Secondary Icon Actions from JSON -->
+<button class="text-[#525252] hover:text-[#171717] p-1.5 rounded hover:bg-[#FAFAFA] transition-colors" title="Adjust Parameters">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</button>
+<button class="text-[#525252] hover:text-[#171717] p-1.5 rounded hover:bg-[#FAFAFA] transition-colors relative" title="Notifications">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+</button>
+<!-- Primary Action -->
+<button class="bg-[#0F766E] hover:bg-[#115E59] text-white text-xs px-3 py-1.5 rounded font-medium transition-colors">
+        Check a post
+      </button>
+<!-- Dispatcher Avatar -->
+<div class="w-7 h-7 rounded-full bg-[#FAFAFA] border border-[#E5E5E5] flex items-center justify-center font-mono text-xs font-medium text-[#171717]" title="Dispatcher initials avatar SV">
+        RK
+      </div>
+</div>
+</header>
+<!-- THREE-COLUMN BODY (Viewport minus 56px) -->
+<main class="flex-1 flex overflow-hidden">
+<!-- A. LEFT COLUMN — "Stories" (360px Fixed) -->
+<section class="w-[360px] flex-shrink-0 border-r border-[#E5E5E5] flex flex-col bg-white">
+<!-- Header & Filters Area -->
+<div class="p-3 border-b border-[#E5E5E5] space-y-2.5 bg-white">
+<!-- Title & Count -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-sm font-semibold text-[#171717]">Stories</span>
+<span class="font-mono text-xs text-[#A3A3A3]">(6 active)</span>
+</div>
+<span class="font-mono text-[11px] text-[#A3A3A3]">AUTOSYNC 4s</span>
+</div>
+<!-- Filter Chips Row -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 text-xs">
+<button class="border border-[#0F766E] font-medium px-2 py-0.5 rounded-full bg-white shrink-0 text-[#0F766E]">All</button>
+<button class="border border-[#E5E5E5] text-[#525252] hover:border-[#A3A3A3] px-2 py-0.5 rounded-full shrink-0 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>Verified
+          </button>
+<button class="border border-[#E5E5E5] text-[#525252] hover:border-[#A3A3A3] px-2 py-0.5 rounded-full shrink-0 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>Conflicting
+          </button>
+<button class="border border-[#E5E5E5] text-[#525252] hover:border-[#A3A3A3] px-2 py-0.5 rounded-full shrink-0 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A3A3A3]"></span>Outdated
+          </button>
+<button class="border border-[#E5E5E5] text-[#525252] hover:border-[#A3A3A3] px-2 py-0.5 rounded-full shrink-0 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#6B7A99]"></span>Unverified
+          </button>
+</div>
+<!-- Dropdowns Row -->
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center gap-1.5">
+<button class="border border-[#E5E5E5] px-2 py-1 rounded text-xs text-[#525252] hover:border-[#A3A3A3] bg-white flex items-center gap-1">
+              All hazards <span class="material-symbols-outlined text-[14px]">expand_more</span>
+</button>
+<button class="border border-[#E5E5E5] px-2 py-1 rounded text-xs text-[#525252] hover:border-[#A3A3A3] bg-white flex items-center gap-1">
+              Last 24 h <span class="material-symbols-outlined text-[14px]">expand_more</span>
+</button>
+</div>
+<span class="text-xs text-[#A3A3A3] hover:text-[#525252] cursor-pointer">Filtered out (15)</span>
+</div>
+</div>
+<!-- Stories List (Scrollable) -->
+<div class="flex-1 overflow-y-auto divide-y divide-[#E5E5E5]">
+<!-- Story 1: Sinhagad Road -->
+<div class="p-3 hover:bg-[#FAFAFA] cursor-pointer transition-colors space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-1.5 text-xs text-[#525252]">
+<span class="material-symbols-outlined text-[15px] text-[#525252]">flood</span>
+<span>Pune</span>
+<span>·</span>
+<span class="font-mono text-[#A3A3A3]">18 min ago</span>
+</div>
+<!-- Status Pill: Verified -->
+<div class="inline-flex items-center gap-1.5 bg-white border border-[#E5E5E5] px-2 py-0.5 rounded-full text-[11px] text-[#171717] shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+<span>Verified</span>
+</div>
+</div>
+<h4 class="text-[13px] font-semibold text-[#171717] leading-snug line-clamp-1">
+            Sinhagad Road under 3–4 ft water
+          </h4>
+<div class="flex items-center justify-between pt-1">
+<span class="font-mono text-[11px] text-[#525252]">23 posts · hi · mr · en</span>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-[#A3A3A3] font-mono">HIGH</span>
+<div class="w-12 h-1 bg-[#E5E5E5] rounded-full overflow-hidden">
+<div class="w-4/5 h-full bg-[#171717]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Story 2: SELECTED ITEM (Khadakwasla Dam) -->
+<div class="p-3 bg-[#FAFAFA] border-l-2 border-l-[#0F766E] cursor-pointer space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-1.5 text-xs text-[#525252]">
+<span class="material-symbols-outlined text-[15px] text-[#525252]">warning</span>
+<span>Pune</span>
+<span>·</span>
+<span class="font-mono text-[#A3A3A3]">25 min ago</span>
+</div>
+<!-- Status Pill: Conflicting -->
+<div class="inline-flex items-center gap-1.5 bg-white border border-[#E5E5E5] px-2 py-0.5 rounded-full text-[11px] text-[#171717] shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>
+<span>Conflicting</span>
+</div>
+</div>
+<h4 class="text-[13px] font-semibold text-[#171717] leading-snug line-clamp-1">
+            Khadakwasla dam gates burst, evacuate now
+          </h4>
+<div class="flex items-center justify-between pt-1">
+<span class="font-mono text-[11px] text-[#525252]">67 posts · mr · hi · en</span>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-[#A3A3A3] font-mono">HIGH</span>
+<div class="w-12 h-1 bg-[#E5E5E5] rounded-full overflow-hidden">
+<div class="w-[85%] h-full bg-[#171717]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Story 3: Kolhapur Bridge -->
+<div class="p-3 hover:bg-[#FAFAFA] cursor-pointer transition-colors space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-1.5 text-xs text-[#525252]">
+<span class="material-symbols-outlined text-[15px] text-[#525252]">videocam</span>
+<span>Kolhapur</span>
+<span>·</span>
+<span class="font-mono text-[#A3A3A3]">40 min ago</span>
+</div>
+<!-- Status Pill: Outdated -->
+<div class="inline-flex items-center gap-1.5 bg-white border border-[#E5E5E5] px-2 py-0.5 rounded-full text-[11px] text-[#171717] shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A3A3A3]"></span>
+<span>Outdated</span>
+</div>
+</div>
+<h4 class="text-[13px] font-semibold text-[#171717] leading-snug line-clamp-1">
+            Old video: Kolhapur bridge washed away
+          </h4>
+<div class="flex items-center justify-between pt-1">
+<span class="font-mono text-[11px] text-[#525252]">14 posts · mr</span>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-[#A3A3A3] font-mono">HIGH</span>
+<div class="w-12 h-1 bg-[#E5E5E5] rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-[#171717]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Story 4: Anantapur Lightning -->
+<div class="p-3 hover:bg-[#FAFAFA] cursor-pointer transition-colors space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-1.5 text-xs text-[#525252]">
+<span class="material-symbols-outlined text-[15px] text-[#525252]">bolt</span>
+<span>Andhra Pradesh</span>
+<span>·</span>
+<span class="font-mono text-[#A3A3A3]">1 h ago</span>
+</div>
+<!-- Status Pill: Unverified -->
+<div class="inline-flex items-center gap-1.5 bg-white border border-[#E5E5E5] px-2 py-0.5 rounded-full text-[11px] text-[#171717] shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-[#6B7A99]"></span>
+<span>Unverified</span>
+</div>
+</div>
+<h4 class="text-[13px] font-semibold text-[#171717] leading-snug line-clamp-1">
+            Lightning deaths reported in Anantapur
+          </h4>
+<div class="flex items-center justify-between pt-1">
+<span class="font-mono text-[11px] text-[#525252]">8 posts · te</span>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-[#A3A3A3] font-mono">LOW</span>
+<div class="w-12 h-1 bg-[#E5E5E5] rounded-full overflow-hidden">
+<div class="w-1/4 h-full bg-[#171717]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Story 5: Delhi Earthquake -->
+<div class="p-3 hover:bg-[#FAFAFA] cursor-pointer transition-colors space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-1.5 text-xs text-[#525252]">
+<span class="material-symbols-outlined text-[15px] text-[#525252]">earthquake</span>
+<span>Delhi</span>
+<span>·</span>
+<span class="font-mono text-[#A3A3A3]">2 h ago</span>
+</div>
+<!-- Status Pill: Conflicting -->
+<div class="inline-flex items-center gap-1.5 bg-white border border-[#E5E5E5] px-2 py-0.5 rounded-full text-[11px] text-[#171717] shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>
+<span>Conflicting</span>
+</div>
+</div>
+<h4 class="text-[13px] font-semibold text-[#171717] leading-snug line-clamp-1">
+            M6.8 earthquake in Delhi, buildings collapsed
+          </h4>
+<div class="flex items-center justify-between pt-1">
+<span class="font-mono text-[11px] text-[#525252]">142 posts · en · hi</span>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-[#A3A3A3] font-mono">HIGH</span>
+<div class="w-12 h-1 bg-[#E5E5E5] rounded-full overflow-hidden">
+<div class="w-[90%] h-full bg-[#171717]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Story 6: Fergusson College Shelters -->
+<div class="p-3 hover:bg-[#FAFAFA] cursor-pointer transition-colors space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-1.5 text-xs text-[#525252]">
+<span class="material-symbols-outlined text-[15px] text-[#525252]">home_pin</span>
+<span>Pune</span>
+<span>·</span>
+<span class="font-mono text-[#A3A3A3]">2 h ago</span>
+</div>
+<!-- Status Pill: Verified -->
+<div class="inline-flex items-center gap-1.5 bg-white border border-[#E5E5E5] px-2 py-0.5 rounded-full text-[11px] text-[#171717] shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+<span>Verified</span>
+</div>
+</div>
+<h4 class="text-[13px] font-semibold text-[#171717] leading-snug line-clamp-1">
+            Shelters open at Fergusson College
+          </h4>
+<div class="flex items-center justify-between pt-1">
+<span class="font-mono text-[11px] text-[#525252]">31 posts · mr · en</span>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-[#A3A3A3] font-mono">MED</span>
+<div class="w-12 h-1 bg-[#E5E5E5] rounded-full overflow-hidden">
+<div class="w-1/2 h-full bg-[#171717]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- B. CENTRE COLUMN — Flexible Map View -->
+<section class="flex-1 relative bg-[#F7F7F7] overflow-hidden select-none">
+<!-- DESATURATED GEOGRAPHIC BASEMAP CANVAS (SVG) -->
+<svg class="w-full h-full absolute inset-0 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="grid" patternunits="userSpaceOnUse" width="40">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="#EFEFEF" stroke-width="1"></path>
+</pattern>
+</defs>
+<!-- Base Grid -->
+<rect fill="url(#grid)" height="100%" width="100%"></rect>
+<!-- Mula-Mutha River Ribbon in #EBEBEB -->
+<path d="M -50 480 C 180 430, 260 380, 390 340 C 520 300, 640 320, 780 260 C 920 200, 1080 180, 1300 120" fill="none" stroke="#EBEBEB" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path>
+<path d="M -50 480 C 180 430, 260 380, 390 340 C 520 300, 640 320, 780 260 C 920 200, 1080 180, 1300 120" fill="none" stroke="#DFDFDF" stroke-dasharray="4,4" stroke-width="1"></path>
+<!-- River Tributary (Khadakwasla Overflow stream) -->
+<path d="M 120 700 C 150 620, 180 540, 220 460" fill="none" stroke="#EBEBEB" stroke-linecap="round" stroke-width="14"></path>
+<!-- Major Secondary Road Arteries (Quiet lines in #E5E5E5) -->
+<path d="M 100 100 L 800 650" fill="none" stroke="#E5E5E5" stroke-width="1.5"></path>
+<path d="M 320 50 L 260 750" fill="none" stroke="#E5E5E5" stroke-width="1.5"></path>
+<path d="M 0 320 L 900 280" fill="none" stroke="#E5E5E5" stroke-width="1"></path>
+<path d="M 180 600 Q 380 500 520 680" fill="none" stroke="#E5E5E5" stroke-dasharray="2,2" stroke-width="1.5"></path>
+<!-- Khadakwasla Reservoir Basin -->
+<circle cx="110" cy="680" fill="#EAEAEA" r="70" stroke="#E0E0E0" stroke-width="1"></circle>
+<!-- Official Alert Area Polygon (NDMA flood boundary) -->
+<polygon fill="#525252" fill-opacity="0.04" points="170,390 380,310 520,380 440,510 260,540" stroke="#525252" stroke-dasharray="4,3" stroke-width="1"></polygon>
+</svg>
+<!-- Landmark Labels in mono #A3A3A3 -->
+<div class="absolute top-[650px] left-[70px] font-mono text-[11px] text-[#A3A3A3] pointer-events-none tracking-tight">Khadakwasla Dam Basin</div>
+<div class="absolute top-[490px] left-[270px] font-mono text-[11px] text-[#A3A3A3] pointer-events-none tracking-tight">Sinhagad Rd Corridor</div>
+<div class="absolute top-[230px] left-[520px] font-mono text-[11px] text-[#A3A3A3] pointer-events-none tracking-tight">Shivajinagar Station</div>
+<div class="absolute top-[370px] left-[450px] font-mono text-[11px] text-[#A3A3A3] pointer-events-none tracking-tight">Kothrud West</div>
+<div class="absolute top-[280px] left-[390px] font-mono text-[11px] text-[#A3A3A3] pointer-events-none tracking-tight">Fergusson College Campus</div>
+<!-- NDMA Alert Polygon Tag Badge -->
+<div class="absolute top-[320px] left-[260px] bg-white border border-[#525252] px-2 py-0.5 rounded shadow-none flex items-center gap-1.5 z-10 pointer-events-auto">
+<span class="w-1.5 h-1.5 rounded-full bg-[#525252]"></span>
+<span class="font-mono text-[10px] font-medium text-[#171717]">NDMA · Flood Alert · until 17:30</span>
+</div>
+<!-- MAP MARKERS & CLUSTERS -->
+<!-- Marker 1: Khadakwasla (Selected Conflicting Incident) -->
+<div class="absolute top-[610px] left-[150px] -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center group cursor-pointer">
+<div class="relative flex items-center justify-center">
+<span class="absolute w-5 h-5 rounded-full border border-[#A88442] opacity-40 animate-ping"></span>
+<span class="w-3 h-3 rounded-full bg-white border-2 border-[#171717] flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>
+</span>
+</div>
+<div class="mt-1 px-1.5 py-0.5 bg-white border border-[#171717] rounded text-[10px] font-mono font-medium text-[#171717] whitespace-nowrap shadow-none">
+          Khadakwasla Dam (67 posts)
+        </div>
+</div>
+<!-- Marker 2: Sinhagad Road (Verified) -->
+<div class="absolute top-[450px] left-[310px] -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center cursor-pointer">
+<div class="w-2.5 h-2.5 rounded-full bg-white border border-[#E5E5E5] flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+</div>
+<div class="mt-1 px-1 bg-white border border-[#E5E5E5] rounded text-[9px] font-mono text-[#525252]">
+          Sinhagad Rd (23)
+        </div>
+</div>
+<!-- Marker 3: Fergusson College (Verified Shelter) -->
+<div class="absolute top-[300px] left-[420px] -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center cursor-pointer">
+<div class="w-2.5 h-2.5 rounded-full bg-white border border-[#E5E5E5] flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+</div>
+<div class="mt-1 px-1 bg-white border border-[#E5E5E5] rounded text-[9px] font-mono text-[#525252]">
+          Shelter Active
+        </div>
+</div>
+<!-- Cluster Marker: Shivajinagar Junction -->
+<div class="absolute top-[260px] left-[580px] -translate-x-1/2 -translate-y-1/2 z-10">
+<div class="px-2 py-0.5 bg-white border border-[#E5E5E5] rounded-full text-xs font-mono font-medium text-[#171717] shadow-none flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A3A3A3]"></span>
+          28
+        </div>
+</div>
+<!-- Cluster Marker: Kothrud South -->
+<div class="absolute top-[420px] left-[480px] -translate-x-1/2 -translate-y-1/2 z-10">
+<div class="px-2 py-0.5 bg-white border border-[#E5E5E5] rounded-full text-xs font-mono font-medium text-[#171717] shadow-none flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#6B7A99]"></span>
+          14
+        </div>
+</div>
+<!-- Top-Right Floating Controls: Layer Toggles & Zoom -->
+<div class="absolute top-4 right-4 z-20 flex items-center gap-2">
+<!-- Layer Selector -->
+<div class="bg-white border border-[#E5E5E5] rounded flex items-center divide-x divide-[#E5E5E5] text-xs text-[#525252]">
+<button class="px-2.5 py-1 text-[#171717] font-medium flex items-center gap-1 bg-[#FAFAFA]">
+<span class="material-symbols-outlined text-[14px]">check</span>Official alerts
+          </button>
+<button class="px-2.5 py-1 hover:text-[#171717] hover:bg-[#FAFAFA] transition-colors">Claims</button>
+<button class="px-2.5 py-1 hover:text-[#171717] hover:bg-[#FAFAFA] transition-colors">Sensors</button>
+<button class="px-2.5 py-1 hover:text-[#171717] hover:bg-[#FAFAFA] transition-colors">News</button>
+</div>
+<!-- Stacked Zoom Controls -->
+<div class="bg-white border border-[#E5E5E5] rounded flex flex-col divide-y divide-[#E5E5E5]">
+<button class="w-7 h-7 flex items-center justify-center text-[#525252] hover:text-[#171717] hover:bg-[#FAFAFA] transition-colors font-mono text-sm leading-none">+</button>
+<button class="w-7 h-7 flex items-center justify-center text-[#525252] hover:text-[#171717] hover:bg-[#FAFAFA] transition-colors font-mono text-sm leading-none">−</button>
+</div>
+</div>
+<!-- Bottom-Left Floating Legend -->
+<div class="absolute bottom-4 left-4 z-20 bg-white border border-[#E5E5E5] rounded p-2.5 text-xs space-y-1.5 shadow-none w-44">
+<div class="text-[10px] font-mono text-[#A3A3A3] uppercase tracking-wider mb-1">MAP LEGEND</div>
+<div class="flex items-center gap-2 text-[#525252]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+<span class="text-[11px]">Verified</span>
+</div>
+<div class="flex items-center gap-2 text-[#525252]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>
+<span class="text-[11px]">Conflicting</span>
+</div>
+<div class="flex items-center gap-2 text-[#525252]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A3A3A3]"></span>
+<span class="text-[11px]">Outdated</span>
+</div>
+<div class="flex items-center gap-2 text-[#525252]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#6B7A99]"></span>
+<span class="text-[11px]">Unverified</span>
+</div>
+<div class="flex items-center gap-2 text-[#525252] pt-0.5">
+<span class="w-3 h-2 border border-[#525252] border-dashed bg-[#525252]/10 inline-block"></span>
+<span class="text-[11px]">Official alert area</span>
+</div>
+</div>
+<!-- Scale & Coordinate readout -->
+<div class="absolute bottom-4 right-4 z-10 font-mono text-[10px] text-[#A3A3A3] bg-white/80 border border-[#E5E5E5] px-2 py-0.5 rounded">
+        18.4285° N, 73.7634° E · 200m
+      </div>
+</section>
+<!-- C. RIGHT COLUMN — "Story Detail" (420px Fixed) -->
+<section class="w-[420px] flex-shrink-0 border-l border-[#E5E5E5] flex flex-col bg-white overflow-y-auto">
+<!-- Header Section -->
+<div class="p-4 border-b border-[#E5E5E5] space-y-3">
+<!-- Top metadata bar -->
+<div class="flex items-center justify-between">
+<span class="font-mono text-xs text-[#525252] tracking-tight">INC-2024-0824</span>
+<div class="flex items-center bg-[#FAFAFA] border border-[#E5E5E5] rounded p-0.5 text-xs">
+<button class="px-2 py-0.5 bg-white border border-[#E5E5E5] font-medium text-[#171717] rounded-sm text-[11px]">Current</button>
+<button class="px-2 py-0.5 text-[#A3A3A3] hover:text-[#525252] text-[11px] transition-colors">Historical</button>
+</div>
+</div>
+<!-- Primary Claim Text -->
+<h2 class="text-xl font-semibold text-[#171717] leading-snug tracking-tight">
+          Khadakwasla dam gates burst, evacuate now
+        </h2>
+<!-- Status & Meta Row -->
+<div class="flex flex-wrap items-center gap-2 pt-0.5">
+<!-- Status Pill -->
+<div class="rounded-full border border-[#E5E5E5] bg-white px-2.5 py-0.5 text-xs text-[#171717] flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></span>
+<span class="font-medium">Conflicting</span>
+</div>
+<!-- Secondary Conflict Category Tag -->
+<span class="border border-[#E5E5E5] px-2 py-0.5 rounded text-[11px] text-[#525252] bg-[#FAFAFA]">
+            Numeric conflict
+          </span>
+<!-- Confidence Indicator -->
+<div class="flex items-center gap-1.5 ml-auto">
+<span class="text-[11px] font-mono text-[#525252]">Conf: Med-High</span>
+<div class="w-10 h-1 bg-[#E5E5E5] rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-[#171717]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- What's Being Claimed Section -->
+<div class="p-4 border-b border-[#E5E5E5] space-y-2.5">
+<div class="text-[11px] font-mono uppercase tracking-wider text-[#A3A3A3]">
+          WHAT'S BEING CLAIMED
+        </div>
+<div class="space-y-2 text-xs">
+<!-- Claim Proposition 1 -->
+<div class="flex items-start justify-between gap-2 p-2 rounded border border-[#E5E5E5] bg-[#FAFAFA]">
+<div class="flex items-start gap-2">
+<span class="text-[#525252] font-semibold">✓</span>
+<span class="text-[#171717]">Heavy rain and flooding in Pune today</span>
+</div>
+<div class="flex items-center gap-1 shrink-0 font-mono text-[10px]">
+<span class="px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-white text-[#525252]">Core</span>
+<span class="px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-white text-[#525252]">Supported</span>
+</div>
+</div>
+<!-- Claim Proposition 2 -->
+<div class="flex items-start justify-between gap-2 p-2 rounded border border-[#E5E5E5] bg-[#FAFAFA]">
+<div class="flex items-start gap-2">
+<span class="text-[#525252] font-semibold">✕</span>
+<span class="text-[#171717]">Khadakwasla dam gates burst</span>
+</div>
+<div class="flex items-center gap-1 shrink-0 font-mono text-[10px]">
+<span class="px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-white text-[#525252]">Core</span>
+<span class="px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-white text-[#525252]">Contradicted</span>
+</div>
+</div>
+<!-- Claim Proposition 3 -->
+<div class="flex items-start justify-between gap-2 p-2 rounded border border-[#E5E5E5] bg-[#FAFAFA]">
+<div class="flex items-start gap-2">
+<span class="text-[#525252] font-semibold">?</span>
+<span class="text-[#171717]">Evacuate within 2 hours</span>
+</div>
+<div class="flex items-center gap-1 shrink-0 font-mono text-[10px]">
+<span class="px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-white text-[#525252]">Detail</span>
+<span class="px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-white text-[#525252]">Unverified</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Side-by-Side Evidence Stack -->
+<div class="p-4 border-b border-[#E5E5E5] space-y-4">
+<!-- Supports Section -->
+<div class="space-y-2">
+<div class="flex items-center justify-between text-xs">
+<span class="font-semibold text-[#171717] flex items-center gap-1.5">
+<span>Supports</span>
+<span class="font-mono text-[#A3A3A3] font-normal">(2 sources)</span>
+</span>
+<span class="text-[11px] font-mono text-[#A3A3A3]">EVIDENCE</span>
+</div>
+<!-- Support Card 1 -->
+<div class="p-2.5 rounded-lg border border-[#E5E5E5] bg-white space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-[#FAFAFA] font-mono text-[10px] text-[#525252]">Official · NDMA SACHET</span>
+<span class="font-mono text-[11px] text-[#A3A3A3]">42 min ago</span>
+</div>
+<div class="text-xs text-[#525252] pl-2 border-l-2 border-[#E5E5E5] italic leading-relaxed">
+              "Red alert issued for Pune district. River discharge expected to increase."
+            </div>
+<div class="flex items-center justify-between pt-1">
+<span class="text-[11px] text-[#A3A3A3]">Pune district</span>
+<a class="text-[11px] flex items-center gap-0.5 font-medium text-[#0F766E]" href="#">Open source ↗</a>
+</div>
+</div>
+<!-- Support Card 2 -->
+<div class="p-2.5 rounded-lg border border-[#E5E5E5] bg-white space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-[#FAFAFA] font-mono text-[10px] text-[#525252]">Sensor · Open-Meteo Station</span>
+<span class="font-mono text-[11px] text-[#A3A3A3]">15 min ago</span>
+</div>
+<div class="text-xs text-[#525252] pl-2 border-l-2 border-[#E5E5E5] italic leading-relaxed">
+              "142 mm rainfall recorded in past 24 h."
+            </div>
+<div class="flex items-center justify-between pt-1">
+<span class="text-[11px] text-[#A3A3A3]">Khadakwasla catchment</span>
+<a class="text-[11px] flex items-center gap-0.5 font-medium text-[#0F766E]" href="#">Open source ↗</a>
+</div>
+</div>
+</div>
+<!-- Contradicts Section -->
+<div class="space-y-2">
+<div class="flex items-center justify-between text-xs">
+<span class="font-semibold text-[#171717] flex items-center gap-1.5">
+<span>Contradicts</span>
+<span class="font-mono text-[#A3A3A3] font-normal">(2 sources)</span>
+</span>
+<span class="text-[11px] font-mono text-[#A3A3A3]">REFUTATION</span>
+</div>
+<!-- Contradict Card 1 -->
+<div class="p-2.5 rounded-lg border border-[#E5E5E5] bg-white space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-[#FAFAFA] font-mono text-[10px] text-[#525252]">Official · Pune Irrigation Dept</span>
+<span class="font-mono text-[11px] text-[#A3A3A3]">30 min ago</span>
+</div>
+<div class="text-xs text-[#525252] pl-2 border-l-2 border-[#E5E5E5] italic leading-relaxed">
+              "Gates opened for controlled discharge of 9,000 cusecs. Structure intact; no breach or gate damage."
+            </div>
+<div class="flex items-center justify-between pt-1">
+<span class="text-[11px] text-[#A3A3A3]">Pune Office</span>
+<a class="text-[11px] flex items-center gap-0.5 font-medium text-[#0F766E]" href="#">Open source ↗</a>
+</div>
+</div>
+<!-- Contradict Card 2 -->
+<div class="p-2.5 rounded-lg border border-[#E5E5E5] bg-white space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-[#FAFAFA] font-mono text-[10px] text-[#525252]">Local News · Lokmat</span>
+<span class="font-mono text-[11px] text-[#A3A3A3]">22 min ago</span>
+</div>
+<div class="text-xs text-[#525252] pl-2 border-l-2 border-[#E5E5E5] italic leading-relaxed">
+              "Irrigation engineers confirm gates opened in controlled manner to manage inflow. Rumours of dam burst false."
+            </div>
+<div class="flex items-center justify-between pt-1">
+<span class="text-[11px] text-[#A3A3A3]">Pune City Desk</span>
+<a class="text-[11px] flex items-center gap-0.5 font-medium text-[#0F766E]" href="#">Open source ↗</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Chronology Timeline Strip -->
+<div class="p-4 border-b border-[#E5E5E5] space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-mono uppercase tracking-wider text-[#A3A3A3]">CHRONOLOGY</span>
+<span class="text-[11px] font-mono text-[#A3A3A3]">IST (UTC+5:30)</span>
+</div>
+<div class="space-y-3 relative pl-3 border-l border-[#E5E5E5] ml-1.5 my-1 text-xs">
+<!-- Item 1 -->
+<div class="relative">
+<span class="absolute -left-[17px] top-1.5 w-2 h-2 rounded-full bg-white border border-[#525252]"></span>
+<div class="font-mono text-[11px] text-[#A3A3A3]">13:05</div>
+<div class="text-[#171717] mt-0.5">Social posts trigger dam burst rumor</div>
+</div>
+<!-- Item 2 -->
+<div class="relative">
+<span class="absolute -left-[17px] top-1.5 w-2 h-2 rounded-full bg-white border border-[#525252]"></span>
+<div class="font-mono text-[11px] text-[#A3A3A3]">13:20</div>
+<div class="text-[#171717] mt-0.5">Local news reports controlled spillway opening</div>
+</div>
+<!-- Item 3 -->
+<div class="relative">
+<span class="absolute -left-[17px] top-1.5 w-2 h-2 rounded-full bg-[#171717]"></span>
+<div class="font-mono text-[11px] text-[#171717] font-medium">13:35</div>
+<div class="text-[#171717] mt-0.5 font-medium">Irrigation Dept releases official discharge advisory</div>
+</div>
+</div>
+</div>
+<!-- Verification Synthesis & Uncertainty Note -->
+<div class="p-4 space-y-3 bg-[#FAFAFA] mt-auto">
+<div class="text-[11px] font-mono uppercase tracking-wider text-[#A3A3A3]">
+          DISPATCH SYNTHESIS
+        </div>
+<p class="text-xs text-[#171717] leading-relaxed">
+          Dam structure remains intact under standard monsoon operational protocol with 9,000 cusecs controlled outflow. Downstream Sinhagad Road low-lying areas face waterlogging from local runoff, which misinformed viral video claims.
+        </p>
+<div class="pt-2 border-t border-[#E5E5E5] text-[12px] text-[#737373] leading-normal flex items-start gap-1.5">
+<span class="material-symbols-outlined text-[15px] shrink-0 text-[#737373] mt-0.5">info</span>
+<span><strong class="font-medium text-[#525252]">Uncertainty:</strong> Upstream catchment inflow rates may require increased discharge within 3–4 hours. Ground sensors along Mutha river active.</span>
+</div>
+</div>
+</section>
+</main>
+</body></html>

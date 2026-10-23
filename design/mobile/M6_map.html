@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-white" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Beacon — Map</title>
+<!-- Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#000000",
+            "outline": "#777777",
+            "inverse-primary": "#c8c6c5",
+            "surface-dim": "#dbdad9",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f5f3f3",
+            "surface-tint": "#5f5e5e",
+            "on-surface-variant": "#474747",
+            "secondary-fixed": "#c6c6c6",
+            "on-secondary-container": "#1b1b1b",
+            "on-tertiary-fixed": "#ffffff",
+            "inverse-on-surface": "#f2f0f0",
+            "on-tertiary-container": "#ffffff",
+            "on-background": "#1b1c1c",
+            "on-primary-fixed-variant": "#e5e2e1",
+            "primary-fixed": "#5f5e5e",
+            "surface-variant": "#e3e2e2",
+            "on-surface": "#1b1c1c",
+            "on-tertiary": "#e2e2e2",
+            "inverse-surface": "#303031",
+            "on-primary": "#e5e2e1",
+            "on-tertiary-fixed-variant": "#e2e2e2",
+            "tertiary": "#3b3b3b",
+            "tertiary-fixed": "#5e5e5e",
+            "surface-container-high": "#e9e8e7",
+            "tertiary-fixed-dim": "#474747",
+            "surface-container": "#efeded",
+            "surface": "#fbf9f9",
+            "on-error": "#ffffff",
+            "surface-container-highest": "#e3e2e2",
+            "error": "#ba1a1a",
+            "background": "#fbf9f9",
+            "tertiary-container": "#747474",
+            "primary-fixed-dim": "#474746",
+            "secondary-fixed-dim": "#ababab",
+            "on-primary-container": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-error-container": "#410002",
+            "secondary-container": "#d4d4d4",
+            "secondary": "#5e5e5e",
+            "primary-container": "#3c3b3b",
+            "on-secondary-fixed": "#1b1b1b",
+            "surface-bright": "#fbf9f9",
+            "on-secondary-fixed-variant": "#3b3b3b",
+            "outline-variant": "#c6c6c6",
+            "on-primary-fixed": "#ffffff",
+            "error-container": "#ffdad6"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            headline: ["Inter", "sans-serif"],
+            display: ["Inter", "sans-serif"],
+            body: ["Inter", "sans-serif"],
+            label: ["Inter", "sans-serif"],
+            mono: ["'JetBrains Mono'", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* System & custom micro-styling strictly conforming to guidelines */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-[#F0F0F0] text-[#171717] antialiased">
+<!-- Mobile Screen Frame (390 x 844) -->
+<main class="relative w-[390px] h-[844px] bg-[#FFFFFF] overflow-hidden flex flex-col border border-[#E5E5E5]">
+<!-- TOP APP BAR (Shared Components JSON Anchor) -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-tertiary z-30">
+<div class="flex justify-between items-center w-full px-4 h-12 max-w-md mx-auto">
+<button aria-label="Search" class="flex items-center justify-center text-secondary dark:text-secondary-fixed hover:text-primary dark:hover:text-on-primary-fixed transition-colors duration-150 active:opacity-80" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="search">search</span>
+</button>
+<span class="font-headline text-base font-bold tracking-tight text-on-surface dark:text-inverse-on-surface">Beacon</span>
+<button aria-label="Filter settings" class="flex items-center justify-center text-secondary dark:text-secondary-fixed hover:text-primary dark:hover:text-on-primary-fixed transition-colors duration-150 active:opacity-80" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+</button>
+</div>
+</header>
+<!-- MAP CANVAS AREA (Desaturated Grey Basemap Pune) -->
+<div aria-label="Map view of Pune" class="relative w-full flex-1 overflow-hidden bg-[#FAFAFA]">
+<!-- Basemap Vector Layers -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" preserveaspectratio="none" viewbox="0 0 390 530" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="36" id="street-grid" patternunits="userSpaceOnUse" width="36">
+<path d="M 36 0 L 0 0 0 36" fill="none" stroke="#F0F0F0" stroke-width="1"></path>
+</pattern>
+</defs>
+<!-- Faint grid background -->
+<rect fill="url(#street-grid)" height="100%" width="100%"></rect>
+<!-- Minor connecting streets -->
+<g fill="none" stroke="#E8E8E8" stroke-linecap="round" stroke-width="1.5">
+<path d="M-20,120 L150,110 L280,180 L420,170"></path>
+<path d="M80,-10 L100,190 L160,340 L190,540"></path>
+<path d="M220,-20 L250,120 L270,300 L320,530"></path>
+<path d="M-10,310 L110,290 L220,380 L400,370"></path>
+<path d="M30,440 L210,400 L350,490"></path>
+</g>
+<!-- Mutha River Ribbon (Clean architectural desaturated river) -->
+<path d="M-20,60 C70,90 110,130 180,150 C260,170 310,240 410,270 L410,290 C300,260 250,190 170,170 C100,150 60,110 -20,80 Z" fill="#EDEDED"></path>
+<!-- Major Arterial Roads -->
+<!-- Karve Road -->
+<path d="M-10,220 C60,205 130,190 230,165 C300,150 360,130 410,120" fill="none" stroke="#DFDFDF" stroke-width="2.5"></path>
+<!-- Sinhagad Road -->
+<path d="M90,530 C130,420 180,310 215,225 C230,190 260,140 280,-10" fill="none" stroke="#DFDFDF" stroke-linecap="round" stroke-width="3"></path>
+<!-- NDMA Alert Area Polygon (Sinhagad Rd / Mutha River Basin) -->
+<!-- Thin 1px #525252 dashed outline with 4% grey fill -->
+<polygon fill="#171717" fill-opacity="0.04" points="120,285 240,245 285,350 170,410" stroke="#525252" stroke-dasharray="4,4" stroke-width="1"></polygon>
+</svg>
+<!-- Road Labels & District Marks (10px Mono #A3A3A3) -->
+<div class="absolute left-4 top-[170px] text-[10px] font-mono tracking-tight text-[#A3A3A3] select-none uppercase">Karve Rd</div>
+<div class="absolute left-[130px] bottom-[260px] text-[10px] font-mono tracking-tight text-[#A3A3A3] select-none -rotate-45 uppercase">Sinhagad Rd</div>
+<div class="absolute right-5 top-[95px] text-[10px] font-mono tracking-tight text-[#A3A3A3] select-none uppercase">Mutha River</div>
+<div class="absolute left-8 top-[90px] text-[11px] font-medium text-[#737373] select-none">Kothrud</div>
+<div class="absolute right-12 bottom-[290px] text-[11px] font-medium text-[#737373] select-none">Khadakwasla</div>
+<!-- NDMA Alert Area Tag -->
+<div class="absolute left-[142px] top-[260px] flex items-center bg-[#FFFFFF] border border-[#525252] rounded px-1.5 py-0.5 pointer-events-none">
+<span class="text-[10px] font-mono font-medium text-[#171717] tracking-tight">NDMA · Flood</span>
+</div>
+<!-- Map Markers -->
+<!-- 1. User Location: Near Kothrud (black dot with thin outer ring #171717 with label 'You') -->
+<div class="absolute left-[88px] top-[125px] flex flex-col items-center">
+<div class="relative flex items-center justify-center w-5 h-5">
+<div class="absolute w-4 h-4 rounded-full border border-[#171717]"></div>
+<div class="w-2 h-2 rounded-full bg-[#171717]"></div>
+</div>
+<span class="mt-0.5 text-[10px] font-mono font-semibold text-[#171717] tracking-tight">You</span>
+</div>
+<!-- 2. Status Dot: Sinhagad Road (Verified: #5F7F68) -->
+<div class="absolute left-[165px] top-[320px] flex items-center justify-center">
+<div class="w-3 h-3 rounded-full bg-white border border-[#E5E5E5] flex items-center justify-center">
+<div class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></div>
+</div>
+</div>
+<!-- 3. Status Dot: Karve Road (Unverified: #6B7A99) -->
+<div class="absolute left-[195px] top-[170px] flex items-center justify-center">
+<div class="w-3 h-3 rounded-full bg-white border border-[#E5E5E5] flex items-center justify-center">
+<div class="w-1.5 h-1.5 rounded-full bg-[#6B7A99]"></div>
+</div>
+</div>
+<!-- 4. Status Dot: Near Khadakwasla (Conflicting: #A88442) -->
+<div class="absolute right-[90px] top-[215px] flex items-center justify-center">
+<div class="w-3 h-3 rounded-full bg-white border border-[#E5E5E5] flex items-center justify-center">
+<div class="w-1.5 h-1.5 rounded-full bg-[#A88442]"></div>
+</div>
+</div>
+<!-- 5. Cluster Badge 1 (Grey circular badge with 1px border and mono count '4') -->
+<div class="absolute left-[110px] top-[210px] w-6 h-6 rounded-full bg-[#FFFFFF] border border-[#E5E5E5] flex items-center justify-center">
+<span class="font-mono text-[11px] font-medium text-[#171717]">4</span>
+</div>
+<!-- 6. Cluster Badge 2 (Grey circular badge with 1px border and mono count '7') -->
+<div class="absolute right-[55px] top-[135px] w-6 h-6 rounded-full bg-[#FFFFFF] border border-[#E5E5E5] flex items-center justify-center">
+<span class="font-mono text-[11px] font-medium text-[#171717]">7</span>
+</div>
+<!-- FLOATING TOP CONTROLS: Segmented Filter Pill -->
+<div class="absolute top-3 inset-x-0 flex justify-center z-20">
+<div class="inline-flex items-center bg-[#FFFFFF] border border-[#E5E5E5] rounded-full p-0.5">
+<button class="px-3 py-1 rounded-full text-[12px] font-medium bg-[#0F766E] text-[#FFFFFF] transition-colors" type="button">
+            All
+          </button>
+<button class="px-3 py-1 rounded-full text-[12px] font-medium text-[#525252] hover:text-[#171717] transition-colors" type="button">
+            Verified
+          </button>
+<button class="px-3 py-1 rounded-full text-[12px] font-medium text-[#525252] hover:text-[#171717] transition-colors" type="button">
+            Watch
+          </button>
+</div>
+</div>
+<!-- FLOATING RECENTER BUTTON (Right side above bottom sheet) -->
+<div class="absolute right-4 bottom-4 z-20">
+<button aria-label="Recenter Map" class="w-10 h-10 rounded-lg bg-[#FFFFFF] border border-[#E5E5E5] flex items-center justify-center text-[#525252] active:bg-[#FAFAFA] transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="my_location">my_location</span>
+</button>
+</div>
+</div>
+<!-- BOTTOM SHEET (~32% height, White background, 1px #E5E5E5 top border, no shadow) -->
+<section class="w-full bg-[#FFFFFF] border-t border-[#E5E5E5] z-30 flex flex-col pt-2.5 pb-2">
+<!-- Centered Drag Handle (36px wide, 4px high, #E5E5E5, rounded-full) -->
+<div class="flex justify-center pb-2.5">
+<div class="w-9 h-1 bg-[#E5E5E5] rounded-full"></div>
+</div>
+<!-- Header: Title 'Near you' + Mono count '3 active' -->
+<div class="flex items-center justify-between px-4 pb-2.5">
+<h2 class="text-[16px] font-semibold text-[#171717] tracking-tight">Near you</h2>
+<span class="font-mono text-[12px] text-[#A3A3A3]">3 active</span>
+</div>
+<!-- List Rows Separated by 1px #E5E5E5 borders -->
+<div class="flex flex-col divide-y divide-[#E5E5E5] border-t border-[#E5E5E5]">
+<!-- Row 1: Sinhagad Road -->
+<article class="px-4 py-2.5 flex flex-col gap-1 hover:bg-[#FAFAFA] transition-colors cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-[#E5E5E5] bg-[#FFFFFF]">
+<span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+<span class="text-[11px] font-medium text-[#171717]">Verified</span>
+</div>
+<span class="font-mono text-[12px] text-[#A3A3A3]">2 km · 18 min</span>
+</div>
+<p class="text-[14px] leading-tight text-[#171717] font-normal truncate">
+            Sinhagad Road under 3–4 ft water
+          </p>
+</article>
+<!-- Row 2: Karve Road -->
+<article class="px-4 py-2.5 flex flex-col gap-1 hover:bg-[#FAFAFA] transition-colors cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-[#E5E5E5] bg-[#FFFFFF]">
+<span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-[#6B7A99]"></span>
+<span class="text-[11px] font-medium text-[#171717]">Unverified</span>
+</div>
+<span class="font-mono text-[12px] text-[#A3A3A3]">2 km · 35 min</span>
+</div>
+<p class="text-[14px] leading-tight text-[#171717] font-normal truncate">
+            Water-logging at Karve Road
+          </p>
+</article>
+<!-- Row 3: Heavy rain (IMD/NDMA) -->
+<article class="px-4 py-2.5 flex flex-col gap-1 hover:bg-[#FAFAFA] transition-colors cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-[#E5E5E5] bg-[#FFFFFF]">
+<span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-[#5F7F68]"></span>
+<span class="text-[11px] font-medium text-[#171717]">Verified</span>
+</div>
+<span class="font-mono text-[12px] text-[#A3A3A3]">4 km · 20 min</span>
+</div>
+<p class="text-[14px] leading-tight text-[#171717] font-normal truncate">
+            Heavy rain expected tonight (IMD/NDMA)
+          </p>
+</article>
+</div>
+</section>
+<!-- DOCKED BOTTOM NAVIGATION BAR (Shared Components JSON Anchor) -->
+<!-- Destination count: 4 | Labels: Home, Map, Check, Settings | Map is ACTIVE -->
+<nav aria-label="Bottom Navigation" class="w-full z-40 flex justify-around items-center px-4 py-1.5 border-t border-[#E5E5E5] bg-surface-container-lowest dark:bg-inverse-surface">
+<!-- 1. Home (Inactive) -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed py-1 active:scale-95 transition-transform duration-100 group" href="#home">
+<span class="material-symbols-outlined text-[20px] text-[#A3A3A3] group-hover:text-primary transition-colors" data-icon="home">home</span>
+<span class="font-label text-xs font-medium text-[#A3A3A3] group-hover:text-primary transition-colors">Home</span>
+</a>
+<!-- 2. Map (Active - Target Screen) -->
+<a aria-current="page" class="flex flex-col items-center justify-center dark:text-on-primary-fixed font-semibold py-1 active:scale-95 transition-transform duration-100 text-[#0F766E]" href="#map">
+<span class="material-symbols-outlined text-[20px] fill-icon text-[#0F766E]" data-icon="map">map</span>
+<span class="font-label text-xs font-semibold text-[#0F766E]">Map</span>
+</a>
+<!-- 3. Check (Inactive) -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed py-1 active:scale-95 transition-transform duration-100 group" href="#check">
+<span class="material-symbols-outlined text-[20px] text-[#A3A3A3] group-hover:text-primary transition-colors" data-icon="fact_check">fact_check</span>
+<span class="font-label text-xs font-medium text-[#A3A3A3] group-hover:text-primary transition-colors">Check</span>
+</a>
+<!-- 4. Settings (Inactive) -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed py-1 active:scale-95 transition-transform duration-100 group" href="#settings">
+<span class="material-symbols-outlined text-[20px] text-[#A3A3A3] group-hover:text-primary transition-colors" data-icon="settings">settings</span>
+<span class="font-label text-xs font-medium text-[#A3A3A3] group-hover:text-primary transition-colors">Settings</span>
+</a>
+</nav>
+</main>
+</body></html>
